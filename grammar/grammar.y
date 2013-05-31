@@ -14,6 +14,7 @@
 #include "AST/Expression.h"
 #include "AST/ParameterList.h"
 #include "AST/Statement.h"
+#include "AST/StatementList.h"
 #include "AST/Type.h"
 #include "AST/VariableDefinition.h"
 
@@ -74,9 +75,9 @@ statement(A) ::= T_BEGIN statements(S) T_END.					{ A = S; }
 statement(A) ::= vardef(V) T_SEMICOLON.						{ A = 1; /* V */ }
 statement(A) ::= expr(E) T_SEMICOLON.						{ A = 1; /* E */ }
 
-%type statements {int}
-statements(A) ::= .								{ A = 0; }
-statements(A) ::= statements(B) statement(C).					{ A = B + C; }
+%type statements {StatementList*}
+statements(A) ::= .								{ A = new StatementList(); }
+statements(A) ::= statements(B) statement(C).					{ B->addStatement(C); A = B; }
 
 %type expr {Expression*}
 expr(A) ::= T_IDENTIFIER(ID) T_ASSIGN expr(E).					{ A = new AssignmentExpression(ID->getText(), E); }
