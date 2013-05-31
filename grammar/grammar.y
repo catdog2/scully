@@ -8,6 +8,8 @@
 #include "Token.h"
 
 #include "AST/ASTElement.h"
+#include "AST/ConstantExpression.h"
+#include "AST/Expression.h"
 #include "AST/ParameterList.h"
 #include "AST/Statement.h"
 #include "AST/Type.h"
