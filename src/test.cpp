@@ -4,6 +4,8 @@
  * Licensed under the GNU GPL v2.
  */
 
+#include "Token.h"
+
 // this file is auto generated from grammar/grammar.y
 #include "grammar.h"
 
@@ -59,6 +61,8 @@ int main() {
 
 	std::cout << "The scully programming languae v0.1" << std::endl;
 
+	void* parser = scullyParserAlloc(malloc);
+
 	while (true) {
 		std::cout << "> ";
 		std::string input;
@@ -77,8 +81,11 @@ int main() {
 			std::string s(results.start, results.end);
 			if (results.id != T_WHITESPACE) {
 				std::cout << "Id: " << results.id << ", Token: " << s << std::endl;
+				scullyParser(parser, results.id, new Token(s));
 			}
 		} while (results.id != 0);
 	}
+
+	scullyParserFree(parser, free);
 	return 0;
 }
