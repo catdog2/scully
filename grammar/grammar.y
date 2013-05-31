@@ -1,5 +1,6 @@
 %include {
 
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include <assert.h>
@@ -20,8 +21,8 @@
 
 programm(A) ::= fundefs(B).							{ A = B; }
 
-fundefs(A) ::= .								{ A = 0: }
-fundefs(A) ::= fundefs fundef(B).						{ A = A + B: }
+fundefs(A) ::= .								{ A = 0; }
+fundefs(A) ::= fundefs fundef(B).						{ A = A + B; }
 
 fundef(A) ::= type(T) T_IDENTIFIER(ID) params(P) T_BEGIN statements(S) T_END.	{ A = T + ID + P + S; }
 
