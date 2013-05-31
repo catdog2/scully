@@ -8,6 +8,9 @@
 #include "Token.h"
 
 #include "AST/ASTElement.h"
+#include "AST/Statement.h"
+#include "AST/VariableDefinition.h"
+#include "AST/Type.h"
 
 }
 
@@ -41,18 +44,18 @@ fundefs(A) ::= .								{ A = 0; }
 fundefs(A) ::= fundefs fundef(B).						{ A = A + B; }
 
 %type fundef {int}
-fundef(A) ::= type(T) T_IDENTIFIER(ID) params(P) T_BEGIN statements(S) T_END.	{ A = T + 1 + P + S; /* ID */ }
+fundef(A) ::= type(T) T_IDENTIFIER(ID) params(P) T_BEGIN statements(S) T_END.	{ A = 1 + 1 + P + S; /* T ID */ }
 
-%type type {int}
-type(A) ::= T_BOOL.								{ A = 1; }
-type(A) ::= T_INT.								{ A = 1; }
-type(A) ::= T_STRING.								{ A = 1; }
-type(A) ::= T_VOID.								{ A = 1; }
+%type type {Type*}
+type(A) ::= T_BOOL.								{ A = new Type("bool"); }
+type(A) ::= T_INT.								{ A = new Type("int"); }
+type(A) ::= T_STRING.								{ A = new Type("string"); }
+type(A) ::= T_VOID.								{ A = new Type("void"); }
 
 %type params {int}
 params(A) ::= .									{ A = 0; }
-params(A) ::= type(T) T_IDENTIFIER(ID).						{ A = T + 1; /* ID */ }
-params(A) ::= params(B) T_COMMA type(T) T_IDENTIFIER(ID).			{ A = B + T + 1; /* ID */ }
+params(A) ::= type(T) T_IDENTIFIER(ID).						{ A = 1 + 1; /* T ID */ }
+params(A) ::= params(B) T_COMMA type(T) T_IDENTIFIER(ID).			{ A = B + 1 + 1; /* T ID */ }
 
 %type statement {int}
 statement(A) ::= T_IF T_LPAREN expr(E) T_RPAREN statement(S).			{ A = E + S; }
@@ -84,7 +87,7 @@ expr(A) ::= T_FALSE.								{ A = 1; }
 expr(A) ::= T_IDENTIFIER(ID) T_LPAREN values(V) T_RPAREN.			{ A = 1 + V; /* ID */ }
 
 %type vardef {int}
-vardef(A) ::= type(T) T_IDENTIFIER(ID).						{ A = T + 1; /* ID */ }
+vardef(A) ::= type(T) T_IDENTIFIER(ID).						{ A = 1 + 1; /* T ID */ }
 
 %type values {int}
 values(A) ::= .									{ A = 0; }

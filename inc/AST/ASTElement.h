@@ -1,7 +1,7 @@
 #ifndef ASTELEMENT_H
 #define ASTELEMENT_H
 
-#include "AST/ASTVisitor.h"
+class ASTVisitor;
 
 class ASTElement {
 public:

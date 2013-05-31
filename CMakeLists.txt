@@ -60,6 +60,9 @@ SET(SCULLY_SOURCE
 
     src/AST/ASTElement.cpp
     src/AST/ASTVisitor.cpp
+	src/AST/Statement.cpp
+	src/AST/VariableDefinition.cpp
+	src/AST/Type.cpp
 
     ${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
 )

@@ -7,4 +7,3 @@ ASTVisitor::ASTVisitor() {
 ASTVisitor::~ASTVisitor() {
 	//
 }
-
