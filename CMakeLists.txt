@@ -32,7 +32,7 @@ ADD_CUSTOM_COMMAND(
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/makeheaders
     ARGS ${CMAKE_CURRENT_BINARY_DIR}/grammar.c
     COMMAND mv
-    ARGS ${CMAKE_CURRENT_BINARY_DIR}/tofu_grammar.c ${CMAKE_CURRENT_BINARY_DIR}/tofu_grammar.cpp
+    ARGS ${CMAKE_CURRENT_BINARY_DIR}/grammar.c ${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
     DEPENDS lemon
     DEPENDS makeheaders
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/grammar/grammar.y
@@ -53,7 +53,7 @@ ENDIF (SCULLY_DEBUG)
 SET(SCULLY_SOURCE
     src/test.cpp
 
-    ${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp GENERATED
+    ${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
 )
 
 ADD_EXECUTABLE (scully ${SCULLY_SOURCE})
