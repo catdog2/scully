@@ -1,0 +1,8 @@
+# Requirements
+- LLVM 3.2
+- A recent C++ compiler
+- CMake 2.6 or newer
+
+# Used Libraries
+- lemon parser (from sqlite) (grammer/*.c)
+- lexertl (http://www.benhanson.net/lexertl.html) ()
