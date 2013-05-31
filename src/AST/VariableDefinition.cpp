@@ -1,7 +1,7 @@
 #include "AST/VariableDefinition.h"
 #include "AST/ASTVisitor.h"
 
-VariableDefinition::VariableDefinition(int type, std::string name) : type_(type), name_(name) {
+VariableDefinition::VariableDefinition(Type* type, std::string name) : type_(type), name_(name) {
 	//
 }
 
@@ -13,7 +13,7 @@ void VariableDefinition::accept(ASTVisitor* visitor) {
 	visitor->visit(this);
 }
 
-int VariableDefinition::getType() {
+Type* VariableDefinition::getType() {
 	return type_;
 }
 

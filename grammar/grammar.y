@@ -38,7 +38,7 @@
 
 %type program {int}
 program ::= fundefs(F).							{ std::cout << F << std::endl; }
-//program ::= expr(E).							{ std::cout << E << std::endl; }
+program ::= expr(E).							{ std::cout << E << std::endl; }
 
 %type fundefs {int}
 fundefs(A) ::= .								{ A = 0; }
@@ -67,7 +67,7 @@ statement(A) ::= T_RFOR T_LPAREN expr(INIT) T_SEMICOLON T_CINT(P) T_SEMICOLON ex
 										{ A = INIT + 1 + STEP + S; /* P */ }
 statement(A) ::= T_RETURN expr(E) T_SEMICOLON.					{ A = E; }
 statement(A) ::= T_BEGIN statements(S) T_END.					{ A = S; }
-statement(A) ::= vardef(V) T_SEMICOLON.						{ A = V; }
+statement(A) ::= vardef(V) T_SEMICOLON.						{ A = 1; /* V */ }
 statement(A) ::= expr(E) T_SEMICOLON.						{ A = E; }
 
 %type statements {int}
@@ -87,8 +87,8 @@ expr(A) ::= T_TRUE.								{ A = 1; }
 expr(A) ::= T_FALSE.								{ A = 1; }
 expr(A) ::= T_IDENTIFIER(ID) T_LPAREN values(V) T_RPAREN.			{ A = 1 + V; /* ID */ }
 
-%type vardef {int}
-vardef(A) ::= type(T) T_IDENTIFIER(ID).						{ A = 1 + 1; /* T ID */ }
+%type vardef {VariableDefinition*}
+vardef(A) ::= type(T) T_IDENTIFIER(ID).						{ A = new VariableDefinition(T, ID->getText()); }
 
 %type values {int}
 values(A) ::= .									{ A = 0; }

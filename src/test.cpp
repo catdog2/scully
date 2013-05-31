@@ -59,7 +59,7 @@ int main() {
 	lexertl::generator::build(rules, state_machine);
 	state_machine.minimise();
 
-	std::cout << "The scully programming languae v0.1" << std::endl;
+	std::cout << "The scully programming language v0.1" << std::endl;
 
 	void* parser = scullyParserAlloc(malloc);
 

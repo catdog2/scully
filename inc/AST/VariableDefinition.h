@@ -4,21 +4,20 @@
 #include <string>
 
 #include "AST/Statement.h"
+#include "AST/Type.h"
 
 class VariableDefinition : public Statement
 {
 public:
-	VariableDefinition(int type, std::string name);
+	VariableDefinition(Type *type, std::string name);
 	virtual ~VariableDefinition();
 
 	virtual void accept(ASTVisitor* visitor);
 
-	// Type* getType();
-	int getType();
+	Type* getType();
 	std::string getName();
 private:
-	// Type* type_
-	int type_;
+	Type* type_;
 	std::string name_;
 };
 
