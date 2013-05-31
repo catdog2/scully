@@ -15,8 +15,10 @@ INCLUDE_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR})
 
 INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/inc)
 
+ADD_DEFINITIONS("-std=c++0x")
+
 ADD_EXECUTABLE (lemon grammar/lemon.c)
-ADD_EXECUTABLE (makeheaders grammar/makeheaders.c)
+#ADD_EXECUTABLE (makeheaders grammar/makeheaders.c)
 
 ADD_CUSTOM_COMMAND(
     COMMAND cp
@@ -24,17 +26,18 @@ ADD_CUSTOM_COMMAND(
     COMMAND cp
     ARGS ${CMAKE_CURRENT_SOURCE_DIR}/grammar/lempar.c ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/lemon
-    ARGS -q -m ${CMAKE_CURRENT_BINARY_DIR}/grammar.y
+#    ARGS -q -m ${CMAKE_CURRENT_BINARY_DIR}/grammar.y
+    ARGS -q ${CMAKE_CURRENT_BINARY_DIR}/grammar.y
     COMMAND rm
     ARGS ${CMAKE_CURRENT_BINARY_DIR}/lempar.c
     COMMAND rm
     ARGS ${CMAKE_CURRENT_BINARY_DIR}/grammar.y
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/makeheaders
-    ARGS ${CMAKE_CURRENT_BINARY_DIR}/grammar.c
+#    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/makeheaders
+#    ARGS ${CMAKE_CURRENT_BINARY_DIR}/grammar.c
     COMMAND mv
     ARGS ${CMAKE_CURRENT_BINARY_DIR}/grammar.c ${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
     DEPENDS lemon
-    DEPENDS makeheaders
+#    DEPENDS makeheaders
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/grammar/grammar.y
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/grammar.h

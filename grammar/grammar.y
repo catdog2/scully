@@ -9,6 +9,9 @@
 
 %token_type {int}
 
+// whitespace and comments
+%type T_WHITESPACE {int}
+
 %right T_ASSIGN.
 %left T_EQUALS.
 %left T_LESS.
