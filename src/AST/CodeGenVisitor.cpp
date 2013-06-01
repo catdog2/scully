@@ -185,6 +185,7 @@ void CodeGenVisitor::visit(RandomIfStatement* e) {
 	value_ = 0;
 	e->getProb()->accept(this);
 
+
 	llvm::Function* f = builder_->GetInsertBlock()->getParent();
 	llvm::BasicBlock* thenBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "then", f);
 	llvm::BasicBlock* elseBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "else");
