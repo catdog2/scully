@@ -1,7 +1,7 @@
 #include "AST/BinOpExpression.h"
 #include "AST/ASTVisitor.h"
 
-BinOpExpression::BinOpExpression(Expression *leftExp, std::string op, Expression *rightExp) :
+BinOpExpression::BinOpExpression(Expression *leftExp, BinOp op, Expression *rightExp) :
     leftExp_(leftExp), op_(op), rightExp_(rightExp) {
 }
 
@@ -9,7 +9,7 @@ BinOpExpression::~BinOpExpression() {
     //
 }
 
-std::string BinOpExpression::getOp() {
+BinOp BinOpExpression::getOp() {
     return op_;
 }
 

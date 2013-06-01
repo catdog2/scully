@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 
+
 PrintVisitor::PrintVisitor() : level_(0) {
 	//
 }
@@ -24,7 +25,33 @@ void PrintVisitor::visit(BinOpExpression* e) {
 	println("BinOpExpression");
 	level_++;
 	std::stringstream ss;
-	ss << "Operator: " << e->getOp();
+	std::string opStr;
+	switch (e->getOp()) {
+	case OP_DIV:
+		opStr = "/";
+		break;
+	case OP_EQUALS:
+		opStr = "==";
+		break;
+	case OP_LESS:
+		opStr = "<";
+		break;
+	case OP_MINUS:
+		opStr = "-";
+		break;
+	case OP_PLUS:
+		opStr = "+";
+		break;
+	case OP_TIMES:
+		opStr = "*";
+		break;
+	default:
+		opStr = "Unknown Op";
+		break;
+	}
+
+
+	ss << "Operator: " << opStr;
 	println(ss.str());
 	println("LHS:");
 	e->getLeftExp()->accept(this);
