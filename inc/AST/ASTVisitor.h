@@ -4,6 +4,7 @@
 #include "AssignmentExpression.h"
 #include "BinOp.h"
 #include "ConstantExpression.h"
+#include "IfStatement.h"
 #include "VariableDefinition.h"
 #include "ParameterList.h"
 
@@ -15,6 +16,7 @@ public:
 	virtual void visit(AssignmentExpression* e) = 0;
 	virtual void visit(BinOp* e) = 0;
 	virtual void visit(ConstantExpression* e) = 0;
+    virtual void visit(IfStatement* e) = 0;
 	virtual void visit(ParameterList* e) = 0;
 	virtual void visit(VariableDefinition* e) = 0;
 };
