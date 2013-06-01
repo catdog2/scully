@@ -59,6 +59,7 @@ SET(SCULLY_SOURCE
 	src/test.cpp
 
 	src/Token.cpp
+	src/libscully.c
 
 	src/AST/ASTElement.cpp
 	src/AST/ASTVisitor.cpp
