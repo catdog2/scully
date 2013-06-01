@@ -88,6 +88,38 @@ void CodeGenVisitor::visit(FunctionCallExpression* e) {
 }
 
 void CodeGenVisitor::visit(FunctionDefinition* e) {
+	std::vector<llvm::Type*> argTypes;
+	auto params = e->getParams()->getParameters();
+	auto iter = params.begin();
+	auto end = params.end();
+	for (; iter != end; ++iter) {
+		Parameter& p = (*iter);
+		argTypes.push_back(typeToLLVMType(p.first));
+	}
+
+	llvm::FunctionType* ft = llvm::FunctionType::get(typeToLLVMType(e->getType()), argTypes, false);
+	llvm::Function *f = llvm::Function::Create(ft, llvm::Function::ExternalLinkage, e->getName(), module_);
+
+	// If f conflicted, there was already something named 'Name'.  If it has a body,
+	// don't allow redefinition or reextern.
+	if (f->getName() != e->getName()) {
+		f->eraseFromParent();
+		f = module_->getFunction(e->getName());
+
+		// If f already has a body, reject this.
+		if (!f->empty()) {
+			throw "redefinition of function";
+		}
+
+		// If f took a different number of args, reject.
+		if (f->arg_size() != e->getParams()->getParameters().size()) {
+			throw "redefinition of function with different # of arguments";
+		}
+	}
+
+	// TODO set arg names
+
+	value_ = f;
 }
 
 void CodeGenVisitor::visit(IfStatement* e) {
