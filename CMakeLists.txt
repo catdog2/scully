@@ -77,6 +77,7 @@ SET(SCULLY_SOURCE
 	src/AST/Type.cpp
 	src/AST/VariableDefinition.cpp
 	src/AST/ValueList.cpp
+	src/AST/FunctionCallExpression.cpp
 
 	${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
 )

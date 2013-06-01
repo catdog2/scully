@@ -15,6 +15,7 @@
 #include "StatementList.h"
 #include "ValueList.h"
 #include "VariableDefinition.h"
+#include "FunctionCallExpression.h"
 
 
 class ASTVisitor {
@@ -36,6 +37,8 @@ public:
 	virtual void visit(StatementList* e) = 0;
 	virtual void visit(ValueList* e) = 0;
 	virtual void visit(VariableDefinition* e) = 0;
+	virtual void visit(FunctionCallExpression* e) = 0;
+
 };
 
 #endif // ASTVISITOR_H
