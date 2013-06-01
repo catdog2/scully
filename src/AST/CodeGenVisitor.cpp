@@ -125,13 +125,13 @@ void CodeGenVisitor::visit(ForStatement* e)
 void CodeGenVisitor::visit(FunctionCallExpression* e) {
 	llvm::Function* cf = module_->getFunction(e->getId());
 	if (!cf) {
-		// TODO error
+		throw "function to call not found";
 		return;
 	}
 
 	auto values = e->getValues()->getValues();
 	if (cf->arg_size() != values.size()) {
-		// TODO error
+		throw "argument size mismatch";
 		return;
 	}
 
@@ -142,7 +142,7 @@ void CodeGenVisitor::visit(FunctionCallExpression* e) {
 		Expression *expr = (*iter);
 		expr->accept(this);
 		if (!value_) {
-			// TODO error
+			throw "error evaluating expression";
 		}
 		args.push_back(value_);
 	}
@@ -234,7 +234,7 @@ void CodeGenVisitor::visit(IfStatement* e) {
 
 	f->getBasicBlockList().push_back(elseBB);
 	builder_->SetInsertPoint(elseBB);
-	// we cna add an else part here later ...
+	// we can add an else part here later ...
 
 	builder_->CreateBr(mergeBB);
 
@@ -319,7 +319,6 @@ void CodeGenVisitor::visit(RandomIfStatement* e) {
 
 void CodeGenVisitor::visit(ReturnStatement* e) {
 	e->getExpr()->accept(this);
-
 	if (!value_) {
 		throw "error evaluating expression";
 	}
