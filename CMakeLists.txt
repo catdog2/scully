@@ -64,6 +64,7 @@ SET(SCULLY_SOURCE
 	src/AST/BinOp.cpp
 	src/AST/ConstantExpression.cpp
 	src/AST/Expression.cpp
+	src/AST/ExpressionStatement.cpp
 	src/AST/ParameterList.cpp
 	src/AST/Scope.cpp
 	src/AST/Statement.cpp

@@ -10,6 +10,7 @@
 #include "StatementList.h"
 #include "ValueList.h"
 #include "VariableDefinition.h"
+#include "ExpressionStatement.h"
 
 class ASTVisitor {
 public:
@@ -19,6 +20,7 @@ public:
 	virtual void visit(AssignmentExpression* e) = 0;
 	virtual void visit(BinOp* e) = 0;
 	virtual void visit(ConstantExpression* e) = 0;
+	virtual void visit(ExpressionStatement* e) = 0;
 	virtual void visit(IfStatement* e) = 0;
 	virtual void visit(ParameterList* e) = 0;
     virtual void visit(Scope* e) = 0;
