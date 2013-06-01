@@ -127,7 +127,7 @@ int main() {
 			lexertl::lookup (state_machine, results);
 			std::string s(results.start, results.end);
 			if (results.id != T_WHITESPACE) {
-				std::cout << "Id: " << results.id << ", Token: " << s << std::endl;
+				//std::cout << "Id: " << results.id << ", Token: " << s << std::endl;
 				scullyParser(parser, results.id, new Token(s), cv);
 			}
 		} while (results.id != 0);

@@ -46,6 +46,9 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 	case BinOp::EQUALS:
 		value_ = builder_->CreateICmpEQ(lhs, rhs, "eqtmp");
 		break;
+	case BinOp::LESS:
+		value_ = builder_->CreateICmpSLT(lhs, rhs, "eqtmp");
+		break;
 	default:
 		// TODO error
 		break;

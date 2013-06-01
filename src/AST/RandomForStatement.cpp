@@ -1,7 +1,7 @@
 #include "AST/RandomForStatement.h"
 #include "AST/ASTVisitor.h"
 
-RandomForStatement::RandomForStatement(Expression *init, Expression *prob, Expression *step, Statement *stmt) : init_(init),prob_(prob),step_(step),stmt_(stmt)
+RandomForStatement::RandomForStatement(Statement *init, Expression *prob, Statement *step, Statement *stmt) : init_(init),prob_(prob),step_(step),stmt_(stmt)
 {
 	//
 }
@@ -14,7 +14,7 @@ void RandomForStatement::accept(ASTVisitor *visitor) {
 	visitor->visit(this);
 }
 
-Expression* RandomForStatement::getInit() {
+Statement *RandomForStatement::getInit() {
 	return init_;
 }
 
@@ -22,7 +22,7 @@ Expression* RandomForStatement::getProb() {
 	return prob_;
 }
 
-Expression* RandomForStatement::getStep() {
+Statement* RandomForStatement::getStep() {
 	return step_;
 }
 
