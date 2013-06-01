@@ -5,6 +5,11 @@ CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *
 	builder_ = new llvm::IRBuilder<>(llvm::getGlobalContext());
 	module_ = module;
 	fpm_ = fpm;
+
+	// create external for random_if
+	std::vector<llvm::Type*> argt(1, typeToLLVMType(Type::INT));
+	llvm::FunctionType* ft = llvm::FunctionType::get(typeToLLVMType(Type::BOOL), argt, false);
+	llvm::Function *f = llvm::Function::Create(ft, llvm::Function::ExternalLinkage, "random_if", module_);
 }
 
 CodeGenVisitor::~CodeGenVisitor() {
