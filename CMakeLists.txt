@@ -62,6 +62,7 @@ SET(SCULLY_SOURCE
 	src/AST/ASTVisitor.cpp
 	src/AST/AssignmentExpression.cpp
 	src/AST/BinOpExpression.cpp
+	src/AST/CodeGenVisitor.cpp
 	src/AST/ConstantExpression.cpp
 	src/AST/Expression.cpp
 	src/AST/ExpressionStatement.cpp
