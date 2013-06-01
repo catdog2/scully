@@ -29,11 +29,15 @@ public:
 	virtual void visit(StatementList* e);
 	virtual void visit(ValueList* e);
 	virtual void visit(VariableDefinition* e);
+	virtual void visit(LoadExpression* e);
+
+	void createAnonymousFunction();
 private:
 	llvm::IRBuilder<>* builder_;
 	llvm::FunctionPassManager* fpm_;
 	llvm::Module* module_;
 	std::map<std::string, llvm::Value*> namedValues_;
+	llvm::Value* value_;
 };
 
 #endif // CODEGENVISITOR_H

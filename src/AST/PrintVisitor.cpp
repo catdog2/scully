@@ -194,6 +194,15 @@ void PrintVisitor::visit(VariableDefinition* e) {
 	level_--;
 }
 
+void PrintVisitor::visit(LoadExpression *e) {
+	println("LoadExpression");
+	level_++;
+	std::stringstream ss;
+	ss << "Name: " << e->getId();
+	println(ss.str());
+	level_--;
+}
+
 void PrintVisitor::indent() {
 	for (int i = 0; i < level_; i++) {
 		std::cout << " ";

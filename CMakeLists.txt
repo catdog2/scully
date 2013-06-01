@@ -66,6 +66,7 @@ SET(SCULLY_SOURCE
 	src/AST/BinOpExpression.cpp
 	src/AST/CodeGenVisitor.cpp
 	src/AST/ConstantExpression.cpp
+	src/AST/LoadExpression.cpp
 	src/AST/Expression.cpp
 	src/AST/ExpressionStatement.cpp
 	src/AST/ForStatement.cpp
@@ -83,6 +84,8 @@ SET(SCULLY_SOURCE
 	src/AST/Type.cpp
 	src/AST/VariableDefinition.cpp
 	src/AST/ValueList.cpp
+	src/AST/LoadExpression.cpp
+
 
 	${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
 )

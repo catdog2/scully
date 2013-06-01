@@ -25,6 +25,7 @@ public:
 	virtual void visit(StatementList* e);
 	virtual void visit(ValueList* e);
 	virtual void visit(VariableDefinition* e);
+	virtual void visit(LoadExpression* e);
 private:
 	int level_;
 	void indent();
