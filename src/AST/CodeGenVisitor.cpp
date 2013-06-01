@@ -17,6 +17,14 @@ CodeGenVisitor::~CodeGenVisitor() {
 }
 
 void CodeGenVisitor::visit(AssignmentExpression* e) {
+	value_ = 0;
+	e->getExpr()->accept(this);
+
+	if (value_ == 0) {
+		throw "error creating expression";
+	}
+
+	builder_->CreateStore(value_, getNamedValue(e->getId()));
 }
 
 void CodeGenVisitor::visit(BinOpExpression* e) {
@@ -241,9 +249,14 @@ void CodeGenVisitor::visit(ValueList* e) {
 }
 
 void CodeGenVisitor::visit(VariableDefinition* e) {
+	llvm::Function* f = builder_->GetInsertBlock()->getParent();
+	llvm::IRBuilder<> tmpBuilder(&(f->getEntryBlock()), f->getEntryBlock().begin());
+	llvm::Value* alloca = tmpBuilder.CreateAlloca(typeToLLVMType(e->getType()), 0 , e->getName());
+	putNamedValue(e->getName(), alloca);
 }
 
 void CodeGenVisitor::visit(LoadExpression *e) {
+	value_ = getNamedValue(e->getId());
 }
 
 void CodeGenVisitor::createAnonymousFunction() {
