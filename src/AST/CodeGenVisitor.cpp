@@ -24,26 +24,26 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 		return;
 	}
 
-//	switch (e->getOp()) {
-//	case "+":
-		value_ = builder_->CreateAdd(lhs, rhs, "addtmp");
-//		break;
-//	case "-":
-//		value_ = builder_->CreateSub(lhs, rhs, "subtmp");
-//		break;
-//	case "*":
-//		value_ = builder_->CreateMul(lhs, rhs, "multmp");
-//		break;
-//	case "/":
-//		value_ = builder_->CreateSDiv(lhs, rhs, "divtmp");
-//		break;
-//	case "==":
-//		value_ = builder_->CreateICmpEQ(lhs, rhs, "eqtmp");
-//		break;
-//	default:
-//		// TODO error
-//		break;
-//	}
+	switch (e->getOp()) {
+	case OP_PLUS:
+	value_ = builder_->CreateAdd(lhs, rhs, "addtmp");
+		break;
+	case OP_MINUS:
+		value_ = builder_->CreateSub(lhs, rhs, "subtmp");
+		break;
+	case OP_TIMES:
+		value_ = builder_->CreateMul(lhs, rhs, "multmp");
+		break;
+	case OP_DIV:
+		value_ = builder_->CreateSDiv(lhs, rhs, "divtmp");
+		break;
+	case OP_EQUALS:
+		value_ = builder_->CreateICmpEQ(lhs, rhs, "eqtmp");
+		break;
+	default:
+		// TODO error
+		break;
+	}
 
 	value_->dump();
 }
