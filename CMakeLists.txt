@@ -65,15 +65,16 @@ SET(SCULLY_SOURCE
 	src/AST/ConstantExpression.cpp
 	src/AST/Expression.cpp
 	src/AST/ExpressionStatement.cpp
+	src/AST/FunctionDefinition.cpp
+	src/AST/IfStatement.cpp
 	src/AST/ParameterList.cpp
+	src/AST/ReturnStatement.cpp
 	src/AST/Scope.cpp
 	src/AST/Statement.cpp
+	src/AST/StatementList.cpp
 	src/AST/Type.cpp
 	src/AST/VariableDefinition.cpp
-	src/AST/StatementList.cpp
 	src/AST/ValueList.cpp
-	src/AST/IfStatement.cpp
-	src/AST/ReturnStatement.cpp
 
 	${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
 )

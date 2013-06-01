@@ -12,8 +12,11 @@
 #include "AST/BinOp.h"
 #include "AST/ConstantExpression.h"
 #include "AST/Expression.h"
+#include "AST/ExpressionStatement.h"
+#include "AST/FunctionDefinition.h"
 #include "AST/IfStatement.h"
 #include "AST/ParameterList.h"
+#include "AST/ReturnStatement.h"
 #include "AST/Scope.h"
 #include "AST/Statement.h"
 #include "AST/StatementList.h"
@@ -45,16 +48,12 @@
 }
 
 %type program {int}
-program ::= fundefs(F).								{ std::cout << F << std::endl; }
+program ::= fundef(F).								{ std::cout << F << std::endl; }
 program ::= expr(E).								{ std::cout << E << std::endl; }
 
-%type fundefs {int}
-fundefs(A) ::= .									{ A = 0; }
-fundefs(A) ::= fundefs fundef(B).					{ A = A + B; }
-
-%type fundef {int}
+%type fundef {FunctionDefinition*}
 fundef(A) ::= type(T) T_IDENTIFIER(ID) T_LPAREN params(P) T_RPAREN T_BEGIN statements(S) T_END.
-													{ A = 1 + 1 + 1 + 1; /* T ID P S */ }
+													{ A = new FunctionDefinition(T, ID->getText(), P, S); }
 
 %type type {Type*}
 type(A) ::= T_BOOL.									{ A = new Type("bool"); }
@@ -77,10 +76,10 @@ statement(A) ::= T_FOR T_LPAREN expr(INIT) T_SEMICOLON expr(COND) T_SEMICOLON ex
 													{ A = 0; /* INIT COND STEP S */ }
 statement(A) ::= T_RFOR T_LPAREN expr(INIT) T_SEMICOLON T_CINT(P) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
 													{ A = 0; /* INIT P STEP S */ }
-statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = 0; /* E */ }
+statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = new ReturnStatement(E); }
 statement(A) ::= T_BEGIN statements(S) T_END.		{ A = new Scope(S); }
-statement(A) ::= vardef(V) T_SEMICOLON.				{ A = 0; /* V */ }
-statement(A) ::= expr(E) T_SEMICOLON.				{ A = 0; /* E */ }
+statement(A) ::= vardef(V) T_SEMICOLON.				{ A = V; /* V */ }
+statement(A) ::= expr(E) T_SEMICOLON.				{ A = new ExpressionStatement(E); }
 
 %type statements {StatementList*}
 statements(A) ::= .									{ A = new StatementList(); }
