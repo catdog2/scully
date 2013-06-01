@@ -14,6 +14,7 @@
 #include "AST/Expression.h"
 #include "AST/IfStatement.h"
 #include "AST/ParameterList.h"
+#include "AST/Scope.h"
 #include "AST/Statement.h"
 #include "AST/StatementList.h"
 #include "AST/Type.h"

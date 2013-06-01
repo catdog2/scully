@@ -6,6 +6,7 @@
 #include "ConstantExpression.h"
 #include "IfStatement.h"
 #include "ParameterList.h"
+#include "Scope.h"
 #include "StatementList.h"
 #include "ValueList.h"
 #include "VariableDefinition.h"
@@ -20,9 +21,10 @@ public:
 	virtual void visit(ConstantExpression* e) = 0;
 	virtual void visit(IfStatement* e) = 0;
 	virtual void visit(ParameterList* e) = 0;
+    virtual void visit(Scope* e) = 0;
+    virtual void visit(StatementList* e) = 0;
 	virtual void visit(ValueList* e) = 0;
 	virtual void visit(VariableDefinition* e) = 0;
-    virtual void visit(StatementList* e) = 0;
 };
 
 #endif // ASTVISITOR_H
