@@ -32,8 +32,8 @@
 int main() {
 	srand(42);
 
-	bool debugParser = false;
-	bool debugCodeGen = false;
+	bool debugParser = true;
+	bool debugCodeGen = true;
 
 	lexertl::rules rules;
 	lexertl::state_machine state_machine;
