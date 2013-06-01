@@ -31,7 +31,7 @@ public:
 	virtual void visit(VariableDefinition* e);
 	virtual void visit(LoadExpression* e);
 
-	void createAnonymousFunction();
+	void JIT(Expression* e);
 private:
 	void putNamedValue(const std::string& name, llvm::Value* value);
 	llvm::Value* getNamedValue(const std::string& name);
@@ -39,7 +39,9 @@ private:
 	llvm::IRBuilder<>* builder_;
 	llvm::FunctionPassManager* fpm_;
 	llvm::Module* module_;
-	std::map<std::string, llvm::Value*> namedValues_;
+
+	int scope_;
+	std::vector<std::map<std::string, llvm::Value*>> namedValues_;
 	llvm::Value* value_;
 };
 

@@ -3,8 +3,11 @@
 
 CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *fpm) {
 	builder_ = new llvm::IRBuilder<>(llvm::getGlobalContext());
-	module_ = module;
 	fpm_ = fpm;
+	module_ = module;
+
+	scope_ = 0;
+	namedValues_.push_back(std::map<std::string, llvm::Value*>());
 
 	// create external for random_if
 	std::vector<llvm::Type*> argt(1, typeToLLVMType(Type::INT));
@@ -271,9 +274,11 @@ void CodeGenVisitor::visit(ReturnStatement* e) {
 }
 
 void CodeGenVisitor::visit(Scope* e) {
-	// TODO increment scope
+	scope_++;
+	namedValues_.push_back(std::map<std::string, llvm::Value*>());
 	e->getSl()->accept(this);
-	// TODO decrement scope
+	namedValues_.pop_back();
+	scope_--;
 }
 
 void CodeGenVisitor::visit(StatementList* e) {
@@ -299,17 +304,23 @@ void CodeGenVisitor::visit(LoadExpression *e) {
 	value_ = getNamedValue(e->getId());
 }
 
-void CodeGenVisitor::createAnonymousFunction() {
-	if (value_) {
-		value_->dump();
-	}
-	// TODO implement
+void CodeGenVisitor::JIT(Expression* e) {
+	// TODO implement ...
 }
 
 void CodeGenVisitor::putNamedValue(const std::string& name, llvm::Value* value) {
-	namedValues_[name] = value;
+	namedValues_[scope_][name] = value;
 }
 
 llvm::Value* CodeGenVisitor::getNamedValue(const std::string& name) {
-	return namedValues_[name];
+	llvm::Value* v = 0;
+
+	for (int i = scope_; i >= 0; i--) {
+		if (namedValues_[i][name] != 0) {
+			v = namedValues_[i][name];
+			break;
+		}
+	}
+
+	return v;
 }
