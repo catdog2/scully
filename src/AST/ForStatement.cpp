@@ -25,6 +25,6 @@ Expression* ForStatement::getStep() {
 	return step_;
 }
 
-Statement* ForStatement::GetStmt() {
+Statement* ForStatement::getStmt() {
 	return stmt_;
 }
