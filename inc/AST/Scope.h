@@ -2,17 +2,18 @@
 #define SCOPE_H
 
 #include "AST/Statement.h"
+#include "AST/StatementList.h"
 
 class Scope : public Statement {
 public:
-	Scope(Statement* stmt);
+	Scope(StatementList* sl);
 	virtual ~Scope();
 
 	virtual void accept(ASTVisitor* visitor);
 
-	Statement* getStmt();
+	StatementList* getSl();
 private:
-	Statement* stmt_;
+	StatementList* sl_;
 };
 
 #endif // SCOPE_H

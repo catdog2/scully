@@ -78,7 +78,7 @@ statement(A) ::= T_FOR T_LPAREN expr(INIT) T_SEMICOLON expr(COND) T_SEMICOLON ex
 statement(A) ::= T_RFOR T_LPAREN expr(INIT) T_SEMICOLON T_CINT(P) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
 													{ A = 0; /* INIT P STEP S */ }
 statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = 0; /* E */ }
-statement(A) ::= T_BEGIN statements(S) T_END.		{ A = 0; /* S */ }
+statement(A) ::= T_BEGIN statements(S) T_END.		{ A = new Scope(S); }
 statement(A) ::= vardef(V) T_SEMICOLON.				{ A = 0; /* V */ }
 statement(A) ::= expr(E) T_SEMICOLON.				{ A = 0; /* E */ }
 
