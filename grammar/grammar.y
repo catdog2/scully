@@ -30,14 +30,12 @@
 #include "AST/ValueList.h"
 #include "AST/VariableDefinition.h"
 
-#include "llvm/Module.h"
-
 }
 
 %name scullyParser
 
 %token_type {Token*}
-%extra_argument{llvm::Module* mod}
+%extra_argument{CodeGenVisitor* cv}
 
 // whitespace and comments
 %type T_WHITESPACE {int}
@@ -57,8 +55,8 @@
 }
 
 %type program {int}
-program ::= fundef(F).								{ PrintVisitor* pv = new PrintVisitor; F->accept(pv); delete pv; }
-program ::= expr(E).								{ PrintVisitor* pv = new PrintVisitor; E->accept(pv); delete pv; }
+program ::= fundef(F).								{ PrintVisitor* pv = new PrintVisitor; F->accept(pv); F->accept(cv); delete pv; }
+program ::= expr(E).								{ PrintVisitor* pv = new PrintVisitor; E->accept(pv); E->accept(cv); delete pv; }
 
 %type fundef {FunctionDefinition*}
 fundef(A) ::= type(T) T_IDENTIFIER(ID) T_LPAREN params(P) T_RPAREN T_BEGIN statements(S) T_END.

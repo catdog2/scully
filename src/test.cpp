@@ -6,6 +6,8 @@
 
 #include "Token.h"
 
+#include "AST/CodeGenVisitor.h"
+
 #include "llvm/DerivedTypes.h"
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/ExecutionEngine/JIT.h"
@@ -103,6 +105,7 @@ int main() {
 
 	fpm->doInitialization();
 
+	CodeGenVisitor* cv = new CodeGenVisitor();
 
 	void* parser = scullyParserAlloc(malloc);
 
@@ -124,7 +127,7 @@ int main() {
 			std::string s(results.start, results.end);
 			if (results.id != T_WHITESPACE) {
 				std::cout << "Id: " << results.id << ", Token: " << s << std::endl;
-				scullyParser(parser, results.id, new Token(s), module);
+				scullyParser(parser, results.id, new Token(s), cv);
 			}
 		} while (results.id != 0);
 
