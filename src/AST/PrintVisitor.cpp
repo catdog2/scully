@@ -11,7 +11,13 @@ PrintVisitor::~PrintVisitor() {
 }
 
 void PrintVisitor::visit(AssignmentExpression* e) {
-	// TODO implement
+	println("AssignmentExpression");
+	level_++;
+	std::stringstream ss;
+	ss << e->getId() << " = ";
+	println(ss.str());
+	e->getExpr()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(BinOpExpression* e) {
@@ -23,7 +29,10 @@ void PrintVisitor::visit(ConstantExpression* e) {
 }
 
 void PrintVisitor::visit(ExpressionStatement* e) {
+	println("ExpressionStatement");
+	level_++;
 	// TODO implement
+	level_--;
 }
 
 void PrintVisitor::visit(ForStatement* e) {
@@ -74,7 +83,14 @@ void PrintVisitor::visit(Scope* e) {
 
 void PrintVisitor::visit(StatementList* e) {
 	println("StatementList");
-	// TODO implement
+	level_++;
+	auto statements = e->getStatements();
+	auto iter = statements.begin();
+	auto end = statements.end();
+	for (; iter != end; ++iter) {
+		(*iter)->accept(this);
+	}
+	level_--;
 }
 
 void PrintVisitor::visit(ValueList* e) {
