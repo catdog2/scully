@@ -16,6 +16,7 @@
 #include "AST/Statement.h"
 #include "AST/StatementList.h"
 #include "AST/Type.h"
+#include "AST/ValueList.h"
 #include "AST/VariableDefinition.h"
 
 }
@@ -95,8 +96,8 @@ expr(A) ::= T_IDENTIFIER(ID) T_LPAREN values(V) T_RPAREN.			{ A = 0; /* ID V */ 
 %type vardef {VariableDefinition*}
 vardef(A) ::= type(T) T_IDENTIFIER(ID).						{ A = new VariableDefinition(T, ID->getText()); }
 
-%type values {int}
-values(A) ::= .									{ A = 0; }
-values(A) ::= expr(E).								{ A = 1; /* E */ }
-values(A) ::= values(B) T_COMMA expr(E).					{ A = B + 1; /* E */ }
+%type values {ValueList*}
+values(A) ::= .									{ A = new ValueList(); }
+values(A) ::= expr(E).								{ A = new ValueList(); A->addValue(E); }
+values(A) ::= values(B) T_COMMA expr(E).					{ B->addValue(E); A = B; }
 

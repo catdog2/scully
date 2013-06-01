@@ -4,19 +4,18 @@
 #include "AST/Expression.h"
 #include <string>
 
-class AssignmentExpression : public Expression
-{
+class AssignmentExpression : public Expression {
 public:
-    AssignmentExpression(std::string id, Expression* expr);
-    virtual ~AssignmentExpression();
+	AssignmentExpression(std::string id, Expression* expr);
+	virtual ~AssignmentExpression();
 
-    virtual void accept(ASTVisitor *visitor);
+	virtual void accept(ASTVisitor *visitor);
 
-    std::string getId();
-    Expression* getExpr();
+	std::string getId();
+	Expression* getExpr();
 private:
-        std::string id_;
-        Expression* expr_;
+	std::string id_;
+	Expression* expr_;
 };
 
 #endif // ASSIGNMENTEXPRESSION_H
