@@ -276,6 +276,7 @@ void CodeGenVisitor::visit(RandomForStatement* e) {
 
 	llvm::BasicBlock* afterBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "afterLoop",f);
 
+	prob = builder_->CreateCall(cf,value_,"callTmp");
 	builder_->CreateCondBr(prob, loopBB, afterBB);
 
 	builder_->SetInsertPoint(afterBB);

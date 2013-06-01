@@ -30,6 +30,8 @@
 #include "lexertl/state_machine.hpp"
 
 int main() {
+	srand(42);
+
 	lexertl::rules rules;
 	lexertl::state_machine state_machine;
 
@@ -45,8 +47,10 @@ int main() {
 	rules.add("string", T_STRING);
 
 	// special characters
-	rules.add("\"(\"", T_LPAREN);
-	rules.add("\")\"", T_RPAREN);
+	//rules.add("\"(\"", T_LPAREN);
+	//rules.add("\")\"", T_RPAREN);
+	rules.add("dana", T_LPAREN);
+	rules.add("fox", T_RPAREN);
 	rules.add("mulder", T_BEGIN);
 	rules.add("scully", T_END);
 	rules.add(",", T_COMMA);
@@ -128,7 +132,11 @@ int main() {
 			std::string s(results.start, results.end);
 			if (results.id != T_WHITESPACE) {
 				//std::cout << "Id: " << results.id << ", Token: " << s << std::endl;
-				scullyParser(parser, results.id, new Token(s), cv);
+				try {
+					scullyParser(parser, results.id, new Token(s), cv);
+				} catch (const char* c) {
+					std::cerr << "Error: " << c << std::endl;
+				}
 			}
 		} while (results.id != 0);
 
