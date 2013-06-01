@@ -70,6 +70,7 @@ SET(SCULLY_SOURCE
 	src/AST/FunctionDefinition.cpp
 	src/AST/IfStatement.cpp
 	src/AST/ParameterList.cpp
+	src/AST/PrintVisitor.cpp
 	src/AST/ReturnStatement.cpp
 	src/AST/RandomForStatement.cpp
 	src/AST/RandomIfStatement.cpp

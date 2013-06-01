@@ -40,7 +40,6 @@ public:
 	virtual void visit(StatementList* e) = 0;
 	virtual void visit(ValueList* e) = 0;
 	virtual void visit(VariableDefinition* e) = 0;
-
 };
 
 #endif // ASTVISITOR_H

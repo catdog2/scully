@@ -18,7 +18,8 @@
 #include "AST/FunctionDefinition.h"
 #include "AST/IfStatement.h"
 #include "AST/ParameterList.h"
-//#include "AST/RandomForStatement.h"
+#include "AST/PrintVisitor.h"
+#include "AST/RandomForStatement.h"
 #include "AST/RandomIfStatement.h"
 #include "AST/ReturnStatement.h"
 #include "AST/Scope.h"
@@ -52,8 +53,8 @@
 }
 
 %type program {int}
-program ::= fundef(F).								{ std::cout << F << std::endl; }
-program ::= expr(E).								{ std::cout << E << std::endl; }
+program ::= fundef(F).								{ PrintVisitor* pv = new PrintVisitor; F->accept(pv); delete pv; }
+program ::= expr(E).								{ PrintVisitor* pv = new PrintVisitor; E->accept(pv); delete pv; }
 
 %type fundef {FunctionDefinition*}
 fundef(A) ::= type(T) T_IDENTIFIER(ID) T_LPAREN params(P) T_RPAREN T_BEGIN statements(S) T_END.
@@ -79,7 +80,7 @@ statement(A) ::= T_RIF T_LPAREN expr(P) T_RPAREN statement(S).
 statement(A) ::= T_FOR T_LPAREN expr(INIT) T_SEMICOLON expr(COND) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
 													{ A = new ForStatement(INIT, COND, STEP, S); }
 statement(A) ::= T_RFOR T_LPAREN expr(INIT) T_SEMICOLON expr(P) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
-													{ A = 0; /* new RandomForStatement(INIT, P, STEP, S); */ }
+													{ A = new RandomForStatement(INIT, P, STEP, S); }
 statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = new ReturnStatement(E); }
 statement(A) ::= T_BEGIN statements(S) T_END.		{ A = new Scope(S); }
 statement(A) ::= vardef(V) T_SEMICOLON.				{ A = V; }
