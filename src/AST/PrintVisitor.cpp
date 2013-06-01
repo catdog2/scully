@@ -21,17 +21,29 @@ void PrintVisitor::visit(AssignmentExpression* e) {
 }
 
 void PrintVisitor::visit(BinOpExpression* e) {
-	// TODO implement
+	println("BinOpExpression");
+	level_++;
+	std::stringstream ss;
+	ss << "Operator: " << e->getOp();
+	println(ss.str());
+	println("LHS:");
+	e->getLeftExp()->accept(this);
+	println("RHS:");
+	e->getRightExp()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(ConstantExpression* e) {
-	// TODO implement
+	println("ConstantExpression");
+	level_++;
+	println(e->getValue());
+	level_--;
 }
 
 void PrintVisitor::visit(ExpressionStatement* e) {
 	println("ExpressionStatement");
 	level_++;
-	// TODO implement
+	e->getExpr()->accept(this);
 	level_--;
 }
 
@@ -47,8 +59,10 @@ void PrintVisitor::visit(FunctionDefinition* e) {
 	println("FunctionDefinition");
 	level_++;
 	std::stringstream ss;
-	ss << e->getType()->getName() << " <- " << e->getName();
+	ss << "Name: " << e->getName();
 	println(ss.str());
+	ss.clear();
+	ss << "Type: " << e->getType()->getName();
 	ParameterList* params = e->getParams();
 	if (params) {
 		params->accept(this);
