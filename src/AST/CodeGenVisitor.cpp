@@ -79,7 +79,11 @@ void CodeGenVisitor::visit(ConstantExpression* e) {
 }
 
 void CodeGenVisitor::visit(ExpressionStatement* e) {
+	value_ = 0;
 	e->getExpr()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression";
+	}
 }
 
 void CodeGenVisitor::visit(ForStatement* e)
@@ -87,7 +91,11 @@ void CodeGenVisitor::visit(ForStatement* e)
 	value_ = 0;
 	e->getInit()->accept(this);
 
+	value_ = 0;
 	e->getCond()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression";
+	}
 
 	llvm::Function* f = builder_->GetInsertBlock()->getParent();
 	llvm::BasicBlock* loopBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "loop", f);
@@ -97,20 +105,14 @@ void CodeGenVisitor::visit(ForStatement* e)
 
 	value_ = 0;
 	e->getStmt()->accept(this);
-	if (value_ == 0) {
-		// throw err
-	}
 
 	value_ = 0;
 	e->getStep()->accept(this);
-	if (value_ == 0) {
-		// throw err
-	}
 
 	value_ = 0;
 	e->getCond()->accept(this);
-	if (value_ == 0) {
-		// throw err
+	if (!value_) {
+		throw "error evaluating expression";
 	}
 
 	llvm::BasicBlock* afterBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "afterLoop",f);
