@@ -16,6 +16,11 @@ CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *
 	llvm::FunctionType* ft = llvm::FunctionType::get(typeToLLVMType(Type::INT), argt, false);
 	llvm::Function::Create(ft, llvm::Function::ExternalLinkage, "put_char", module_);
 
+
+	// create external for time_seed
+	ft = llvm::FunctionType::get(typeToLLVMType(Type::INT), false);
+	llvm::Function::Create(ft, llvm::Function::ExternalLinkage, "time_seed", module_);
+
 	// create external for random_if
 	ft = llvm::FunctionType::get(typeToLLVMType(Type::BOOL), argt, false);
 	llvm::Function::Create(ft, llvm::Function::ExternalLinkage, "random_if", module_);

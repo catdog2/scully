@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
-
+#include <time.h>
 int put_char(int c) {
 	printf("%c", c);
 	return 0;
@@ -12,4 +12,9 @@ bool random_if(int p) {
 	//srand(time(NULL));
 	int r = rand() % 100;
 	return (r < p);
+}
+
+int time_seed() {
+	srand(time(NULL));
+	return 0;
 }
