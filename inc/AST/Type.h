@@ -3,14 +3,6 @@
 
 #include <string>
 
-class Type {
-public:
-	Type(std::string name);
-	~Type();
-
-	std::string getName();
-private:
-	std::string name_;
-};
+enum class Type { BOOL, INT, STRING, VOID };
 
 #endif // TYPE_H

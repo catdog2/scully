@@ -80,7 +80,7 @@ void PrintVisitor::visit(FunctionDefinition* e) {
 	println(ss.str());
 	ss.str("");
 	ss.clear();
-	ss << "Type: " << e->getType()->getName();
+	ss << "Type: " << e->getType();
 	println(ss.str());
 	ParameterList* params = e->getParams();
 	if (params) {

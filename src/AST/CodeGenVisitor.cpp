@@ -59,6 +59,32 @@ void CodeGenVisitor::visit(ForStatement* e) {
 }
 
 void CodeGenVisitor::visit(FunctionCallExpression* e) {
+	llvm::Function* cf = module_->getFunction(e->getId());
+	if (!cf) {
+		// TODO error
+		return;
+	}
+
+	auto values = e->getValues()->getValues();
+	if (cf->arg_size() != values.size()) {
+		// TODO error
+		return;
+	}
+
+	std::vector<llvm::Value*> args;
+	auto iter = values.begin();
+	auto end = values.end();
+	for (; iter != end; ++iter) {
+		Expression *expr = (*iter);
+		expr->accept(this);
+		if (!value_) {
+			// TODO error
+		}
+		args.push_back(value_);
+	}
+
+	value_ = builder_->CreateCall(cf, args, "calltmp");
+	value_->dump();
 }
 
 void CodeGenVisitor::visit(FunctionDefinition* e) {
