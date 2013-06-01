@@ -189,17 +189,18 @@ void CodeGenVisitor::visit(RandomForStatement* e) {
 void CodeGenVisitor::visit(RandomIfStatement* e) {
 	value_ = 0;
 	e->getProb()->accept(this);
-
+	llvm::Function* cf = module_->getFunction("random_if");
+	llvm::Value* cond = builder_->CreateCall(cf,value_,"callTmp");
 
 	llvm::Function* f = builder_->GetInsertBlock()->getParent();
 	llvm::BasicBlock* thenBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "then", f);
 	llvm::BasicBlock* elseBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "else");
 	llvm::BasicBlock* mergeBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "merge");
 
-	builder_->CreateCondBr(value_, thenBB, elseBB);
+	builder_->CreateCondBr(cond, thenBB, elseBB);
 
 	// then
-	builder_->SetInsertPoint(thenBB);#
+	builder_->SetInsertPoint(thenBB);
 	e->getStmt()->accept(this);
 
 	builder_->CreateBr(mergeBB);
