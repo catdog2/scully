@@ -1,4 +1,5 @@
 #include "AST/CodeGenVisitor.h"
+#include <iostream>
 
 CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *fpm) {
 	builder_ = new llvm::IRBuilder<>(llvm::getGlobalContext());
@@ -117,8 +118,30 @@ void CodeGenVisitor::visit(FunctionDefinition* e) {
 		}
 	}
 
-	// TODO set arg names
+	// set arg names
+	unsigned idx = 0;
+	for(auto ai = f->arg_begin(); idx != params.size(); ++ai, ++idx) {
+		ai->setName(params[idx].second);
+		//std::cout << "naming parameter " << idx << ": " << params[idx].second << std::endl;
 
+		// add to symbol table
+		putNamedValue(params[idx].second, ai);
+	}
+
+	llvm::BasicBlock* bb = llvm::BasicBlock::Create(llvm::getGlobalContext(), "entry", f);
+	builder_->SetInsertPoint(bb);
+
+	// put all arguments on the stack
+	idx = 0;
+	for(auto ai = f->arg_begin(); idx != params.size(); ++ai, ++idx) {
+		std::string name = params[idx].second;
+		// TODO ...
+	}
+
+	// build code for the statements
+	e->getSl()->accept(this);
+
+	// TODO implement ...
 	value_ = f;
 }
 
@@ -135,12 +158,20 @@ void CodeGenVisitor::visit(RandomIfStatement* e) {
 }
 
 void CodeGenVisitor::visit(ReturnStatement* e) {
+	e->getExpr()->accept(this);
+	builder_->CreateRet(value_);
 }
 
 void CodeGenVisitor::visit(Scope* e) {
 }
 
 void CodeGenVisitor::visit(StatementList* e) {
+	auto statements = e->getStatements();
+	auto iter = statements.begin();
+	auto end = statements.end();
+	for (; iter != end; ++iter) {
+		(*iter)->accept(this);
+	}
 }
 
 void CodeGenVisitor::visit(ValueList* e) {
@@ -157,4 +188,12 @@ void CodeGenVisitor::createAnonymousFunction() {
 		value_->dump();
 	}
 	// TODO implement
+}
+
+void CodeGenVisitor::putNamedValue(const std::string& name, llvm::Value* value) {
+	namedValues_[name] = value;
+}
+
+llvm::Value* CodeGenVisitor::getNamedValue(const std::string& name) {
+	return namedValues_[name];
 }

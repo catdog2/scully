@@ -42,6 +42,7 @@ int main() {
 	rules.add("void", T_VOID);
 	rules.add("rfor", T_RFOR);
 	rules.add("rif", T_RIF);
+	rules.add("string", T_STRING);
 
 	// special characters
 	rules.add("\"(\"", T_LPAREN);

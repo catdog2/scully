@@ -33,6 +33,9 @@ public:
 
 	void createAnonymousFunction();
 private:
+	void putNamedValue(const std::string& name, llvm::Value* value);
+	llvm::Value* getNamedValue(const std::string& name);
+
 	llvm::IRBuilder<>* builder_;
 	llvm::FunctionPassManager* fpm_;
 	llvm::Module* module_;
