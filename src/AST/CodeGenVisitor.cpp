@@ -88,6 +88,7 @@ void CodeGenVisitor::visit(FunctionCallExpression* e) {
 }
 
 void CodeGenVisitor::visit(FunctionDefinition* e) {
+	//std::vector<llvm::Type*> types;
 }
 
 void CodeGenVisitor::visit(IfStatement* e) {
