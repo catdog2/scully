@@ -65,7 +65,47 @@ void CodeGenVisitor::visit(ConstantExpression* e) {
 void CodeGenVisitor::visit(ExpressionStatement* e) {
 }
 
-void CodeGenVisitor::visit(ForStatement* e) {
+void CodeGenVisitor::visit(ForStatement* e)
+{
+	value_ = 0;
+	e->getInit()->accept(this);
+
+
+	e->getCond()->accept(this);
+
+	llvm::Function* f = builder_->GetInsertBlock()->getParent();
+	llvm::BasicBlock* loopBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "loop", f);
+
+	builder_->CreateBr(loopBB);
+	builder_->SetInsertPoint(loopBB);
+
+
+	value_ = 0;
+	e->getStmt()->accept(this);
+	if (value_ == 0) {
+		// throw err
+	}
+
+
+
+	value_ = 0;
+	e->getStep()->accept(this);
+	if (value_ == 0) {
+		// throw err
+	}
+
+
+	value_ = 0;
+	e->getCond()->accept(this);
+	if (value_ == 0) {
+		// throw err
+	}
+
+	llvm::BasicBlock* afterBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "afterLoop",f);
+
+	builder_->CreateCondBr(value_, loopBB, afterBB);
+
+	builder_->SetInsertPoint(afterBB);
 }
 
 void CodeGenVisitor::visit(FunctionCallExpression* e) {
