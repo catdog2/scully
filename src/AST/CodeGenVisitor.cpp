@@ -24,7 +24,6 @@ CodeGenVisitor::~CodeGenVisitor() {
 void CodeGenVisitor::visit(AssignmentExpression* e) {
 	value_ = 0;
 	e->getExpr()->accept(this);
-
 	if (value_ == 0) {
 		throw "error creating expression";
 	}
@@ -34,14 +33,16 @@ void CodeGenVisitor::visit(AssignmentExpression* e) {
 
 void CodeGenVisitor::visit(BinOpExpression* e) {
 	e->getLeftExp()->accept(this);
-	llvm::Value* lhs = value_;
-	e->getRightExp()->accept(this);
-	llvm::Value* rhs = value_;
-
-	if ((!lhs) || (!rhs)) {
-		// TODO error
-		return;
+	if (!value_) {
+		throw "error evaluating expression (lhs)";
 	}
+	llvm::Value* lhs = value_;
+
+	e->getRightExp()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression (rhs)";
+	}
+	llvm::Value* rhs = value_;
 
 	if (lhs->getType() != rhs->getType()) {
 		throw "lhs type of binop != rhs type of binop";
