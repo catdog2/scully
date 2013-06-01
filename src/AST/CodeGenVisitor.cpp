@@ -241,6 +241,44 @@ void CodeGenVisitor::visit(ParameterList* e) {
 }
 
 void CodeGenVisitor::visit(RandomForStatement* e) {
+
+	value_ = 0;
+	e->getInit()->accept(this);
+
+	e->getProb()->accept(this);
+	llvm::Function* cf = module_->getFunction("random_if");
+	llvm::Value* prob = builder_->CreateCall(cf,value_,"callTmp");
+
+
+	llvm::Function* f = builder_->GetInsertBlock()->getParent();
+	llvm::BasicBlock* loopBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "loop", f);
+
+	builder_->CreateBr(loopBB);
+	builder_->SetInsertPoint(loopBB);
+
+	value_ = 0;
+	e->getStmt()->accept(this);
+	if (value_ == 0) {
+		// throw err
+	}
+
+	value_ = 0;
+	e->getStep()->accept(this);
+	if (value_ == 0) {
+		// throw err
+	}
+
+	value_ = 0;
+	e->getProb()->accept(this);
+	if (value_ == 0) {
+		// throw err
+	}
+
+	llvm::BasicBlock* afterBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "afterLoop",f);
+
+	builder_->CreateCondBr(prob, loopBB, afterBB);
+
+	builder_->SetInsertPoint(afterBB);
 }
 
 void CodeGenVisitor::visit(RandomIfStatement* e) {
