@@ -48,11 +48,28 @@ void PrintVisitor::visit(ExpressionStatement* e) {
 }
 
 void PrintVisitor::visit(ForStatement* e) {
-	// TODO implement
+	println("ForStatement");
+	level_++;
+	println("Init:");
+	e->getInit()->accept(this);
+	println("Cond:");
+	e->getCond()->accept(this);
+	println("Step:");
+	e->getStep()->accept(this);
+	println("Stmt:");
+	e->getStmt()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(FunctionCallExpression* e) {
-	// TODO implement
+	println("FunctionCallExpression");
+	level_++;
+	std::stringstream ss;
+	ss << "Name: " << e->getId();
+	println(ss.str());
+	println("Values:");
+	e->getValues()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(FunctionDefinition* e) {
@@ -61,8 +78,10 @@ void PrintVisitor::visit(FunctionDefinition* e) {
 	std::stringstream ss;
 	ss << "Name: " << e->getName();
 	println(ss.str());
+	ss.str("");
 	ss.clear();
 	ss << "Type: " << e->getType()->getName();
+	println(ss.str());
 	ParameterList* params = e->getParams();
 	if (params) {
 		params->accept(this);
@@ -72,7 +91,13 @@ void PrintVisitor::visit(FunctionDefinition* e) {
 }
 
 void PrintVisitor::visit(IfStatement* e) {
-	// TODO implement
+	println("IfStatement");
+	level_++;
+	println("Cond:");
+	e->getCond()->accept(this);
+	println("Stmt:");
+	e->getStmt()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(ParameterList* e) {
@@ -88,11 +113,17 @@ void PrintVisitor::visit(RandomIfStatement* e) {
 }
 
 void PrintVisitor::visit(ReturnStatement* e) {
-	// TODO implement
+	println("ReturnStatement");
+	level_++;
+	e->getExpr()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(Scope* e) {
-	// TODO implement
+	println("Scope");
+	level_++;
+	e->getSl()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(StatementList* e) {
@@ -115,7 +146,11 @@ void PrintVisitor::visit(VariableDefinition* e) {
 	println("VariableDefinition");
 	level_++;
 	std::stringstream ss;
-	ss << e->getType()->getName() << "<-" << e->getName();
+	ss << "Name: " << e->getName();
+	println(ss.str());
+	ss.str("");
+	ss.clear();
+	ss << "Type: " << e->getType()->getName();
 	println(ss.str());
 	level_--;
 }
