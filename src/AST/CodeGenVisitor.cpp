@@ -11,9 +11,13 @@ CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *
 	scope_ = 0;
 	namedValues_.push_back(std::map<std::string, llvm::Value*>());
 
-	// create external for random_if
+	// create external for putchar
 	std::vector<llvm::Type*> argt(1, typeToLLVMType(Type::INT));
-	llvm::FunctionType* ft = llvm::FunctionType::get(typeToLLVMType(Type::BOOL), argt, false);
+	llvm::FunctionType* ft = llvm::FunctionType::get(typeToLLVMType(Type::INT), argt, false);
+	llvm::Function::Create(ft, llvm::Function::ExternalLinkage, "put_char", module_);
+
+	// create external for random_if
+	ft = llvm::FunctionType::get(typeToLLVMType(Type::BOOL), argt, false);
 	llvm::Function::Create(ft, llvm::Function::ExternalLinkage, "random_if", module_);
 }
 
