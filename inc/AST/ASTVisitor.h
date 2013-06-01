@@ -2,7 +2,7 @@
 #define ASTVISITOR_H
 
 #include "AssignmentExpression.h"
-#include "BinOp.h"
+#include "BinOpExpression.h"
 #include "ConstantExpression.h"
 #include "ExpressionStatement.h"
 #include "ForStatement.h"
@@ -24,7 +24,7 @@ public:
 	virtual ~ASTVisitor();
 
 	virtual void visit(AssignmentExpression* e) = 0;
-	virtual void visit(BinOp* e) = 0;
+	virtual void visit(BinOpExpression* e) = 0;
 	virtual void visit(ConstantExpression* e) = 0;
 	virtual void visit(ExpressionStatement* e) = 0;
 	virtual void visit(ForStatement* e) = 0;

@@ -4,10 +4,10 @@
 #include <string>
 #include "AST/Expression.h"
 
-class BinOp : public Expression {
+class BinOpExpression : public Expression {
 public:
-    BinOp(Expression* leftExp ,std::string op, Expression* rightExp);
-    virtual ~BinOp();
+    BinOpExpression(Expression* leftExp ,std::string op, Expression* rightExp);
+    virtual ~BinOpExpression();
 
     std::string getOp();
     Expression* getLeftExp();

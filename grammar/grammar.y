@@ -9,7 +9,7 @@
 
 #include "AST/ASTElement.h"
 #include "AST/AssignmentExpression.h"
-#include "AST/BinOp.h"
+#include "AST/BinOpExpression.h"
 #include "AST/ConstantExpression.h"
 #include "AST/Expression.h"
 #include "AST/ExpressionStatement.h"
@@ -89,12 +89,12 @@ statements(A) ::= statements(B) statement(C).		{ B->addStatement(C); A = B; }
 
 %type expr {Expression*}
 expr(A) ::= T_IDENTIFIER(ID) T_ASSIGN expr(E).		{ A = new AssignmentExpression(ID->getText(), E); }
-expr(A) ::= expr(B) T_EQUALS expr(C).				{ A = new BinOp(B, "==", C); }
-expr(A) ::= expr(B) T_LESS expr(C).					{ A = new BinOp(B, "<", C); }
-expr(A) ::= expr(B) T_PLUS expr(C).					{ A = new BinOp(B, "+", C); }
-expr(A) ::= expr(B) T_MINUS expr(C).				{ A = new BinOp(B, "-", C); }
-expr(A) ::= expr(B) T_TIMES expr(C).				{ A = new BinOp(B, "*", C); }
-expr(A) ::= expr(B) T_DIV expr(C).					{ A = new BinOp(B, "/", C); }
+expr(A) ::= expr(B) T_EQUALS expr(C).				{ A = new BinOpExpression(B, "==", C); }
+expr(A) ::= expr(B) T_LESS expr(C).					{ A = new BinOpExpression(B, "<", C); }
+expr(A) ::= expr(B) T_PLUS expr(C).					{ A = new BinOpExpression(B, "+", C); }
+expr(A) ::= expr(B) T_MINUS expr(C).				{ A = new BinOpExpression(B, "-", C); }
+expr(A) ::= expr(B) T_TIMES expr(C).				{ A = new BinOpExpression(B, "*", C); }
+expr(A) ::= expr(B) T_DIV expr(C).					{ A = new BinOpExpression(B, "/", C); }
 expr(A) ::= T_CINT(I).								{ A = new ConstantExpression(I->getText()); }
 expr(A) ::= T_TRUE.									{ A = new ConstantExpression("true"); }
 expr(A) ::= T_FALSE.								{ A = new ConstantExpression("false"); }
