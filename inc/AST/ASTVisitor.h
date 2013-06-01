@@ -6,6 +6,7 @@
 #include "ConstantExpression.h"
 #include "VariableDefinition.h"
 #include "ParameterList.h"
+#include "StatementList.h"
 
 class ASTVisitor {
 public:
@@ -17,6 +18,7 @@ public:
 	virtual void visit(ConstantExpression* e) = 0;
 	virtual void visit(ParameterList* e) = 0;
 	virtual void visit(VariableDefinition* e) = 0;
+    virtual void visit(StatementList* e) = 0;
 };
 
 #endif // ASTVISITOR_H

@@ -61,13 +61,14 @@ SET(SCULLY_SOURCE
     src/AST/ASTElement.cpp
     src/AST/ASTVisitor.cpp
     src/AST/AssignmentExpression.cpp
-	src/AST/BinOp.cpp
+    src/AST/BinOp.cpp
     src/AST/ConstantExpression.cpp
-	src/AST/Expression.cpp
-	src/AST/ParameterList.cpp
-	src/AST/Statement.cpp
-	src/AST/Type.cpp
-	src/AST/VariableDefinition.cpp
+    src/AST/Expression.cpp
+    src/AST/ParameterList.cpp
+    src/AST/Statement.cpp
+    src/AST/Type.cpp
+    src/AST/VariableDefinition.cpp
+    src/AST/StatementList.cpp
 
     ${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
 )
