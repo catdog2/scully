@@ -6,6 +6,7 @@
 #include "ConstantExpression.h"
 #include "ExpressionStatement.h"
 #include "ForStatement.h"
+#include "FunctionCallExpression.h"
 #include "FunctionDefinition.h"
 #include "IfStatement.h"
 #include "ParameterList.h"
@@ -15,7 +16,6 @@
 #include "StatementList.h"
 #include "ValueList.h"
 #include "VariableDefinition.h"
-#include "FunctionCallExpression.h"
 
 
 class ASTVisitor {
@@ -28,6 +28,7 @@ public:
 	virtual void visit(ConstantExpression* e) = 0;
 	virtual void visit(ExpressionStatement* e) = 0;
 	virtual void visit(ForStatement* e) = 0;
+	virtual void visit(FunctionCallExpression* e) = 0;
 	virtual void visit(FunctionDefinition* e) = 0;
 	virtual void visit(IfStatement* e) = 0;
 	virtual void visit(ParameterList* e) = 0;
@@ -37,7 +38,6 @@ public:
 	virtual void visit(StatementList* e) = 0;
 	virtual void visit(ValueList* e) = 0;
 	virtual void visit(VariableDefinition* e) = 0;
-	virtual void visit(FunctionCallExpression* e) = 0;
 
 };
 

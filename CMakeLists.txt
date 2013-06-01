@@ -66,6 +66,7 @@ SET(SCULLY_SOURCE
 	src/AST/Expression.cpp
 	src/AST/ExpressionStatement.cpp
 	src/AST/ForStatement.cpp
+	src/AST/FunctionCallExpression.cpp
 	src/AST/FunctionDefinition.cpp
 	src/AST/IfStatement.cpp
 	src/AST/ParameterList.cpp
@@ -77,7 +78,6 @@ SET(SCULLY_SOURCE
 	src/AST/Type.cpp
 	src/AST/VariableDefinition.cpp
 	src/AST/ValueList.cpp
-	src/AST/FunctionCallExpression.cpp
 
 	${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
 )

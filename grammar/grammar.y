@@ -14,9 +14,11 @@
 #include "AST/Expression.h"
 #include "AST/ExpressionStatement.h"
 #include "AST/ForStatement.h"
+#include "AST/FunctionCallExpression.h"
 #include "AST/FunctionDefinition.h"
 #include "AST/IfStatement.h"
 #include "AST/ParameterList.h"
+//#include "AST/RandomForStatement.h"
 #include "AST/RandomIfStatement.h"
 #include "AST/ReturnStatement.h"
 #include "AST/Scope.h"
@@ -77,7 +79,7 @@ statement(A) ::= T_RIF T_LPAREN expr(P) T_RPAREN statement(S).
 statement(A) ::= T_FOR T_LPAREN expr(INIT) T_SEMICOLON expr(COND) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
 													{ A = new ForStatement(INIT, COND, STEP, S); }
 statement(A) ::= T_RFOR T_LPAREN expr(INIT) T_SEMICOLON expr(P) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
-													{ A = 0; /* INIT P STEP S */ }
+													{ A = 0; /* new RandomForStatement(INIT, P, STEP, S); */ }
 statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = new ReturnStatement(E); }
 statement(A) ::= T_BEGIN statements(S) T_END.		{ A = new Scope(S); }
 statement(A) ::= vardef(V) T_SEMICOLON.				{ A = V; }
@@ -99,7 +101,7 @@ expr(A) ::= T_CINT(I).								{ A = new ConstantExpression(I->getText()); }
 expr(A) ::= T_TRUE.									{ A = new ConstantExpression("true"); }
 expr(A) ::= T_FALSE.								{ A = new ConstantExpression("false"); }
 expr(A) ::= T_IDENTIFIER(ID) T_LPAREN values(V) T_RPAREN.
-													{ A = 0; /* ID V */ }
+													{ A = new FunctionCallExpression(ID->getText(), V); }
 
 %type vardef {VariableDefinition*}
 vardef(A) ::= type(T) T_IDENTIFIER(ID).				{ A = new VariableDefinition(T, ID->getText()); }
