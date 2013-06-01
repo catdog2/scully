@@ -2,10 +2,11 @@
 #include "llvm/Analysis/Verifier.h"
 #include <iostream>
 
-CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *fpm) {
+CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *fpm, llvm::ExecutionEngine *ee) {
 	builder_ = new llvm::IRBuilder<>(llvm::getGlobalContext());
 	fpm_ = fpm;
 	module_ = module;
+	ee_ = ee;
 
 	scope_ = 0;
 	namedValues_.push_back(std::map<std::string, llvm::Value*>());
@@ -78,6 +79,7 @@ void CodeGenVisitor::visit(ConstantExpression* e) {
 }
 
 void CodeGenVisitor::visit(ExpressionStatement* e) {
+	e->getExpr()->accept(this);
 }
 
 void CodeGenVisitor::visit(ForStatement* e)
@@ -200,12 +202,11 @@ void CodeGenVisitor::visit(FunctionDefinition* e) {
 	// build code for the statements
 	e->getSl()->accept(this);
 
-	f->dump();
 	// validate generated code
 	llvm::verifyFunction(*f);
 
 	// optimize function
-	//fpm_->run(*f);
+	fpm_->run(*f);
 
 	value_ = f;
 }
@@ -314,7 +315,26 @@ void CodeGenVisitor::visit(LoadExpression *e) {
 }
 
 void CodeGenVisitor::JIT(Expression* e) {
-	// TODO implement ...
+	StatementList* sl = new StatementList();
+	sl->addStatement(new ReturnStatement(e));
+	FunctionDefinition* fd = new FunctionDefinition(Type::INT, "", new ParameterList(), sl);
+
+	value_ = 0;
+	fd->accept(this);
+
+	if (!value_) {
+		delete fd;
+		throw "error evaluating expression";
+	}
+
+	llvm::Function* f = dynamic_cast<llvm::Function*>(value_);
+
+	void* fPtr = ee_->getPointerToFunction(f);
+
+	// some casting ... because we like magic
+	int (*fP)() = (int (*)())(intptr_t)fPtr;
+
+	std::cout << "Evaluated to: " << fP() << std::endl;
 }
 
 void CodeGenVisitor::putNamedValue(const std::string& name, llvm::Value* value) {

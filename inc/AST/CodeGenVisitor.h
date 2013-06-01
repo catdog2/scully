@@ -2,6 +2,7 @@
 #define CODEGENVISITOR_H
 
 #include "ASTVisitor.h"
+#include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/IRBuilder.h"
 #include "llvm/Module.h"
 #include "llvm/PassManager.h"
@@ -10,7 +11,7 @@
 
 class CodeGenVisitor : public ASTVisitor {
 public:
-	CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager* fpm);
+	CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager* fpm, llvm::ExecutionEngine* ee);
 	virtual ~CodeGenVisitor();
 
  	virtual void visit(AssignmentExpression* e);
@@ -39,6 +40,7 @@ private:
 	llvm::IRBuilder<>* builder_;
 	llvm::FunctionPassManager* fpm_;
 	llvm::Module* module_;
+	llvm::ExecutionEngine* ee_;
 
 	int scope_;
 	std::vector<std::map<std::string, llvm::Value*>> namedValues_;

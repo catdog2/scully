@@ -57,7 +57,7 @@
 
 %type program {int}
 program ::= fundef(F).								{ PrintVisitor* pv = new PrintVisitor; F->accept(pv); F->accept(cv); delete pv; }
-program ::= expr(E).								{ PrintVisitor* pv = new PrintVisitor; E->accept(pv); E->accept(cv); delete pv; }
+program ::= expr(E).								{ PrintVisitor* pv = new PrintVisitor; E->accept(pv); cv->JIT(E); delete pv; }
 
 %type fundef {FunctionDefinition*}
 fundef(A) ::= type(T) T_IDENTIFIER(ID) T_LPAREN params(P) T_RPAREN T_BEGIN statements(S) T_END.
