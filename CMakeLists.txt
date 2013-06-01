@@ -15,7 +15,7 @@ INCLUDE_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR})
 
 INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/inc)
 
-ADD_DEFINITIONS("-std=c++0x")
+SET(CMAKE_CXX_FLAGS "-std=c++11")
 
 ADD_EXECUTABLE (lemon grammar/lemon.c)
 ADD_EXECUTABLE (makeheaders grammar/makeheaders.c)
