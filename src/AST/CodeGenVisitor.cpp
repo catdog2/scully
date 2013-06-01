@@ -144,6 +144,29 @@ void CodeGenVisitor::visit(FunctionDefinition* e) {
 }
 
 void CodeGenVisitor::visit(IfStatement* e) {
+	value_ = 0;
+	e->getCond()->accept(this);
+
+	llvm::Function* f = builder_->GetInsertBlock()->getParent();
+	llvm::BasicBlock* thenBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "then", f);
+	llvm::BasicBlock* elseBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "else");
+	llvm::BasicBlock* mergeBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "merge");
+
+	builder_->CreateCondBr(value_, thenBB, elseBB);
+
+	builder_->SetInsertPoint(thenBB);
+	e->getStmt()->accept(this);
+
+	builder_->CreateBr(mergeBB);
+
+	f->getBasicBlockList().push_back(elseBB);
+	builder_->SetInsertPoint(elseBB);
+	// we cna add an else part here later ...
+
+	builder_->CreateBr(mergeBB);
+
+	f->getBasicBlockList().push_back(mergeBB);
+	builder_->SetInsertPoint(mergeBB);
 }
 
 void CodeGenVisitor::visit(ParameterList* e) {
