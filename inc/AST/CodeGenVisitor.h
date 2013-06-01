@@ -3,12 +3,14 @@
 
 #include "ASTVisitor.h"
 #include "llvm/IRBuilder.h"
+#include "llvm/Module.h"
+#include "llvm/PassManager.h"
 #include <map>
 #include <string>
 
 class CodeGenVisitor : public ASTVisitor {
 public:
-	CodeGenVisitor();
+	CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager* fpm);
 	virtual ~CodeGenVisitor();
 
  	virtual void visit(AssignmentExpression* e);
@@ -29,6 +31,8 @@ public:
 	virtual void visit(VariableDefinition* e);
 private:
 	llvm::IRBuilder<>* builder_;
+	llvm::FunctionPassManager* fpm_;
+	llvm::Module* module_;
 	std::map<std::string, llvm::Value*> namedValues_;
 };
 

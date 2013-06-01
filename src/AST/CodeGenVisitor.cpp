@@ -1,11 +1,13 @@
 #include "AST/CodeGenVisitor.h"
 
-CodeGenVisitor::CodeGenVisitor() {
+CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *fpm) {
 	builder_ = new llvm::IRBuilder<>(llvm::getGlobalContext());
+	module_ = module;
+	fpm_ = fpm;
 }
 
 CodeGenVisitor::~CodeGenVisitor() {
-	//
+	delete builder_;
 }
 
 void CodeGenVisitor::visit(AssignmentExpression* e) {

@@ -105,7 +105,7 @@ int main() {
 
 	fpm->doInitialization();
 
-	CodeGenVisitor* cv = new CodeGenVisitor();
+	CodeGenVisitor* cv = new CodeGenVisitor(module, fpm);
 
 	void* parser = scullyParserAlloc(malloc);
 
