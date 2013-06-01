@@ -25,19 +25,19 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 	}
 
 	switch (e->getOp()) {
-	case OP_PLUS:
+	case BinOp::PLUS:
 	value_ = builder_->CreateAdd(lhs, rhs, "addtmp");
 		break;
-	case OP_MINUS:
+	case BinOp::MINUS:
 		value_ = builder_->CreateSub(lhs, rhs, "subtmp");
 		break;
-	case OP_TIMES:
+	case BinOp::TIMES:
 		value_ = builder_->CreateMul(lhs, rhs, "multmp");
 		break;
-	case OP_DIV:
+	case BinOp::DIV:
 		value_ = builder_->CreateSDiv(lhs, rhs, "divtmp");
 		break;
-	case OP_EQUALS:
+	case BinOp::EQUALS:
 		value_ = builder_->CreateICmpEQ(lhs, rhs, "eqtmp");
 		break;
 	default:
