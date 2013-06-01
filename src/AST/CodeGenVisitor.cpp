@@ -45,8 +45,6 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 		// TODO error
 		break;
 	}
-
-	value_->dump();
 }
 
 void CodeGenVisitor::visit(ConstantExpression* e) {
@@ -85,7 +83,6 @@ void CodeGenVisitor::visit(FunctionCallExpression* e) {
 	}
 
 	value_ = builder_->CreateCall(cf, args, "calltmp");
-	value_->dump();
 }
 
 void CodeGenVisitor::visit(FunctionDefinition* e) {
@@ -134,14 +131,15 @@ void CodeGenVisitor::visit(FunctionDefinition* e) {
 	// put all arguments on the stack
 	idx = 0;
 	for(auto ai = f->arg_begin(); idx != params.size(); ++ai, ++idx) {
-		std::string name = params[idx].second;
-		// TODO ...
+		llvm::Value* alloca = builder_->CreateAlloca(typeToLLVMType(params[idx].first) ,0 , params[idx].second);
+		builder_->CreateStore(ai, alloca);
+		putNamedValue(params[idx].second, alloca);
 	}
 
 	// build code for the statements
 	e->getSl()->accept(this);
 
-	// TODO implement ...
+	// TODO we might want to call verifyFunction ...
 	value_ = f;
 }
 
@@ -163,6 +161,9 @@ void CodeGenVisitor::visit(ReturnStatement* e) {
 }
 
 void CodeGenVisitor::visit(Scope* e) {
+	// TODO increment scope
+	e->getSl()->accept(this);
+	// TODO decrement scope
 }
 
 void CodeGenVisitor::visit(StatementList* e) {
