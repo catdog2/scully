@@ -24,7 +24,6 @@ CodeGenVisitor::~CodeGenVisitor() {
 void CodeGenVisitor::visit(AssignmentExpression* e) {
 	value_ = 0;
 	e->getExpr()->accept(this);
-
 	if (value_ == 0) {
 		throw "error creating expression";
 	}
@@ -34,13 +33,19 @@ void CodeGenVisitor::visit(AssignmentExpression* e) {
 
 void CodeGenVisitor::visit(BinOpExpression* e) {
 	e->getLeftExp()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression (lhs)";
+	}
 	llvm::Value* lhs = value_;
+
 	e->getRightExp()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression (rhs)";
+	}
 	llvm::Value* rhs = value_;
 
-	if ((!lhs) || (!rhs)) {
-		// TODO error
-		return;
+	if (lhs->getType() != rhs->getType()) {
+		throw "lhs type of binop != rhs type of binop";
 	}
 
 	switch (e->getOp()) {
@@ -63,7 +68,7 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 		value_ = builder_->CreateICmpSLT(lhs, rhs, "cmptmp");
 		break;
 	default:
-		// TODO error
+		throw "Unkown Operator, This is a Bug!";
 		break;
 	}
 }
@@ -79,7 +84,11 @@ void CodeGenVisitor::visit(ConstantExpression* e) {
 }
 
 void CodeGenVisitor::visit(ExpressionStatement* e) {
+	value_ = 0;
 	e->getExpr()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression";
+	}
 }
 
 void CodeGenVisitor::visit(ForStatement* e)
@@ -87,7 +96,11 @@ void CodeGenVisitor::visit(ForStatement* e)
 	value_ = 0;
 	e->getInit()->accept(this);
 
+	value_ = 0;
 	e->getCond()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression";
+	}
 
 	llvm::Function* f = builder_->GetInsertBlock()->getParent();
 	llvm::BasicBlock* loopBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "loop", f);
@@ -97,20 +110,14 @@ void CodeGenVisitor::visit(ForStatement* e)
 
 	value_ = 0;
 	e->getStmt()->accept(this);
-	if (value_ == 0) {
-		// throw err
-	}
 
 	value_ = 0;
 	e->getStep()->accept(this);
-	if (value_ == 0) {
-		// throw err
-	}
 
 	value_ = 0;
 	e->getCond()->accept(this);
-	if (value_ == 0) {
-		// throw err
+	if (!value_) {
+		throw "error evaluating expression";
 	}
 
 	llvm::BasicBlock* afterBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "afterLoop",f);
@@ -123,13 +130,13 @@ void CodeGenVisitor::visit(ForStatement* e)
 void CodeGenVisitor::visit(FunctionCallExpression* e) {
 	llvm::Function* cf = module_->getFunction(e->getId());
 	if (!cf) {
-		// TODO error
+		throw "function to call not found";
 		return;
 	}
 
 	auto values = e->getValues()->getValues();
 	if (cf->arg_size() != values.size()) {
-		// TODO error
+		throw "argument size mismatch";
 		return;
 	}
 
@@ -140,7 +147,7 @@ void CodeGenVisitor::visit(FunctionCallExpression* e) {
 		Expression *expr = (*iter);
 		expr->accept(this);
 		if (!value_) {
-			// TODO error
+			throw "error evaluating expression";
 		}
 		args.push_back(value_);
 	}
@@ -214,6 +221,9 @@ void CodeGenVisitor::visit(FunctionDefinition* e) {
 void CodeGenVisitor::visit(IfStatement* e) {
 	value_ = 0;
 	e->getCond()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression";
+	}
 
 	llvm::Function* f = builder_->GetInsertBlock()->getParent();
 	llvm::BasicBlock* thenBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "then", f);
@@ -229,7 +239,7 @@ void CodeGenVisitor::visit(IfStatement* e) {
 
 	f->getBasicBlockList().push_back(elseBB);
 	builder_->SetInsertPoint(elseBB);
-	// we cna add an else part here later ...
+	// we can add an else part here later ...
 
 	builder_->CreateBr(mergeBB);
 
@@ -238,17 +248,21 @@ void CodeGenVisitor::visit(IfStatement* e) {
 }
 
 void CodeGenVisitor::visit(ParameterList* e) {
+	// NOT USED
 }
 
 void CodeGenVisitor::visit(RandomForStatement* e) {
-
 	value_ = 0;
 	e->getInit()->accept(this);
 
+	value_ = 0;
 	e->getProb()->accept(this);
-	llvm::Function* cf = module_->getFunction("random_if");
-	llvm::Value* prob = builder_->CreateCall(cf,value_,"callTmp");
+	if (!value_) {
+		throw "error evaluating expression";
+	}
 
+	llvm::Function* cf = module_->getFunction("random_if");
+	llvm::Value* prob = builder_->CreateCall(cf, value_, "callTmp");
 
 	llvm::Function* f = builder_->GetInsertBlock()->getParent();
 	llvm::BasicBlock* loopBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "loop", f);
@@ -258,20 +272,14 @@ void CodeGenVisitor::visit(RandomForStatement* e) {
 
 	value_ = 0;
 	e->getStmt()->accept(this);
-	if (value_ == 0) {
-		// throw err
-	}
 
 	value_ = 0;
 	e->getStep()->accept(this);
-	if (value_ == 0) {
-		// throw err
-	}
 
 	value_ = 0;
 	e->getProb()->accept(this);
 	if (value_ == 0) {
-		// throw err
+		throw "error evaluating expression";
 	}
 
 	llvm::BasicBlock* afterBB = llvm::BasicBlock::Create(llvm::getGlobalContext(), "afterLoop",f);
@@ -285,6 +293,10 @@ void CodeGenVisitor::visit(RandomForStatement* e) {
 void CodeGenVisitor::visit(RandomIfStatement* e) {
 	value_ = 0;
 	e->getProb()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression";
+	}
+
 	llvm::Function* cf = module_->getFunction("random_if");
 	llvm::Value* cond = builder_->CreateCall(cf,value_,"callTmp");
 
@@ -312,6 +324,10 @@ void CodeGenVisitor::visit(RandomIfStatement* e) {
 
 void CodeGenVisitor::visit(ReturnStatement* e) {
 	e->getExpr()->accept(this);
+	if (!value_) {
+		throw "error evaluating expression";
+	}
+
 	builder_->CreateRet(value_);
 }
 
