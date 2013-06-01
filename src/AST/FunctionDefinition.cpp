@@ -1,7 +1,7 @@
 #include "AST/FunctionDefinition.h"
 #include "AST/ASTVisitor.h"
 
-FunctionDefinition::FunctionDefinition(Type *type, std::string name, ParameterList *params, StatementList *sl) : type_(type), name_(name), params_(params), sl_(sl) {
+FunctionDefinition::FunctionDefinition(Type type, std::string name, ParameterList *params, StatementList *sl) : type_(type), name_(name), params_(params), sl_(sl) {
 	//
 }
 
@@ -13,7 +13,7 @@ void FunctionDefinition::accept(ASTVisitor* visitor) {
 	visitor->visit(this);
 }
 
-Type* FunctionDefinition::getType() {
+Type FunctionDefinition::getType() {
 	return type_;
 }
 

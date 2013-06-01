@@ -9,15 +9,15 @@
 class VariableDefinition : public Statement
 {
 public:
-	VariableDefinition(Type *type, std::string name);
+	VariableDefinition(Type type, std::string name);
 	virtual ~VariableDefinition();
 
 	virtual void accept(ASTVisitor* visitor);
 
-	Type* getType();
+	Type getType();
 	std::string getName();
 private:
-	Type* type_;
+	Type type_;
 	std::string name_;
 };
 

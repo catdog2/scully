@@ -63,11 +63,11 @@ program ::= expr(E).								{ PrintVisitor* pv = new PrintVisitor; E->accept(pv)
 fundef(A) ::= type(T) T_IDENTIFIER(ID) T_LPAREN params(P) T_RPAREN T_BEGIN statements(S) T_END.
 													{ A = new FunctionDefinition(T, ID->getText(), P, S); }
 
-%type type {Type*}
-type(A) ::= T_BOOL.									{ A = new Type("bool"); }
-type(A) ::= T_INT.									{ A = new Type("int"); }
-type(A) ::= T_STRING.								{ A = new Type("string"); }
-type(A) ::= T_VOID.									{ A = new Type("void"); }
+%type type {Type}
+type(A) ::= T_BOOL.									{ A = Type::BOOL; }
+type(A) ::= T_INT.									{ A = Type::INT; }
+type(A) ::= T_STRING.								{ A = Type::STRING; }
+type(A) ::= T_VOID.									{ A = Type::VOID; }
 
 %type params {ParameterList*}
 params(A) ::= .										{ A = new ParameterList(); }

@@ -107,7 +107,7 @@ void PrintVisitor::visit(FunctionDefinition* e) {
 	println(ss.str());
 	ss.str("");
 	ss.clear();
-	ss << "Type: " << e->getType();
+	ss << "Type: " << typeToString(e->getType());
 	println(ss.str());
 	ParameterList* params = e->getParams();
 	if (params) {
@@ -140,7 +140,7 @@ void PrintVisitor::visit(ParameterList* e) {
 		println(ss.str());
 		ss.str("");
 		ss.clear();
-		ss << "Type: " << p.first->getName();
+		ss << "Type: " << typeToString(p.first);
 		println(ss.str());
 	}
 	level_--;
@@ -216,7 +216,7 @@ void PrintVisitor::visit(VariableDefinition* e) {
 	println(ss.str());
 	ss.str("");
 	ss.clear();
-	ss << "Type: " << e->getType()->getName();
+	ss << "Type: " << typeToString(e->getType());
 	println(ss.str());
 	level_--;
 }

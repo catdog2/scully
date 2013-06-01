@@ -13,7 +13,7 @@ void ParameterList::accept(ASTVisitor* visitor) {
 	visitor->visit(this);
 }
 
-void ParameterList::addParameter(Type* type, std::string name) {
+void ParameterList::addParameter(Type type, std::string name) {
 	params_.push_back(Parameter(type, name));
 }
 

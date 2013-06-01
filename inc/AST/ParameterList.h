@@ -5,7 +5,7 @@
 #include "AST/Type.h"
 #include <vector>
 
-typedef std::pair<Type*, std::string> Parameter;
+typedef std::pair<Type, std::string> Parameter;
 
 class ParameterList : public ASTElement {
 public:
@@ -14,7 +14,7 @@ public:
 
 	virtual void accept(ASTVisitor* visitor);
 
-	void addParameter(Type* type, std::string name);
+	void addParameter(Type type, std::string name);
 	std::vector<Parameter> getParameters();
 private:
 	std::vector<Parameter> params_;

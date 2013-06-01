@@ -9,17 +9,17 @@
 
 class FunctionDefinition : public ASTElement {
 public:
-	FunctionDefinition(Type *type, std::string name, ParameterList* params, StatementList* sl);
+	FunctionDefinition(Type type, std::string name, ParameterList* params, StatementList* sl);
 	virtual ~FunctionDefinition();
 
 	virtual void accept(ASTVisitor* visitor);
 
-	Type* getType();
+	Type getType();
 	std::string getName();
 	ParameterList* getParams();
 	StatementList* getSl();
 private:
-	Type* type_;
+	Type type_;
 	std::string name_;
 	ParameterList* params_;
 	StatementList* sl_;
