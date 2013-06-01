@@ -1,4 +1,5 @@
 #include "AST/CodeGenVisitor.h"
+#include "llvm/Analysis/Verifier.h"
 #include <iostream>
 
 CodeGenVisitor::CodeGenVisitor(llvm::Module* module, llvm::FunctionPassManager *fpm) {
@@ -55,10 +56,10 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 		value_ = builder_->CreateSDiv(lhs, rhs, "divtmp");
 		break;
 	case BinOp::EQUALS:
-		value_ = builder_->CreateICmpEQ(lhs, rhs, "eqtmp");
+		value_ = builder_->CreateICmpEQ(lhs, rhs, "cmptmp");
 		break;
 	case BinOp::LESS:
-		value_ = builder_->CreateICmpSLT(lhs, rhs, "eqtmp");
+		value_ = builder_->CreateICmpSLT(lhs, rhs, "cmptmp");
 		break;
 	default:
 		// TODO error
@@ -84,7 +85,6 @@ void CodeGenVisitor::visit(ForStatement* e)
 	value_ = 0;
 	e->getInit()->accept(this);
 
-
 	e->getCond()->accept(this);
 
 	llvm::Function* f = builder_->GetInsertBlock()->getParent();
@@ -93,21 +93,17 @@ void CodeGenVisitor::visit(ForStatement* e)
 	builder_->CreateBr(loopBB);
 	builder_->SetInsertPoint(loopBB);
 
-
 	value_ = 0;
 	e->getStmt()->accept(this);
 	if (value_ == 0) {
 		// throw err
 	}
 
-
-
 	value_ = 0;
 	e->getStep()->accept(this);
 	if (value_ == 0) {
 		// throw err
 	}
-
 
 	value_ = 0;
 	e->getCond()->accept(this);
@@ -204,7 +200,13 @@ void CodeGenVisitor::visit(FunctionDefinition* e) {
 	// build code for the statements
 	e->getSl()->accept(this);
 
-	// TODO we might want to call verifyFunction ...
+	f->dump();
+	// validate generated code
+	llvm::verifyFunction(*f);
+
+	// optimize function
+	//fpm_->run(*f);
+
 	value_ = f;
 }
 
@@ -291,6 +293,7 @@ void CodeGenVisitor::visit(StatementList* e) {
 }
 
 void CodeGenVisitor::visit(ValueList* e) {
+	// NOT USED
 }
 
 void CodeGenVisitor::visit(VariableDefinition* e) {
@@ -301,7 +304,13 @@ void CodeGenVisitor::visit(VariableDefinition* e) {
 }
 
 void CodeGenVisitor::visit(LoadExpression *e) {
-	value_ = getNamedValue(e->getId());
+	llvm::Value* v = getNamedValue(e->getId());
+
+	if (!v) {
+		throw "unknown variable name";
+	}
+
+	value_ = builder_->CreateLoad(v, e->getId());
 }
 
 void CodeGenVisitor::JIT(Expression* e) {
