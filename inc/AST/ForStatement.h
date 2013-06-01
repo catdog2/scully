@@ -14,7 +14,7 @@ public:
 	Expression* getInit();
 	Expression* getCond();
 	Expression* getStep();
-	Statement* GetStmt();
+	Statement* getStmt();
 private:
 	Expression* init_;
 	Expression* cond_;

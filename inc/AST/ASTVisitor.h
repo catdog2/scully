@@ -10,6 +10,7 @@
 #include "FunctionDefinition.h"
 #include "IfStatement.h"
 #include "ParameterList.h"
+#include "RandomForStatement.h"
 #include "RandomIfStatement.h"
 #include "ReturnStatement.h"
 #include "Scope.h"
@@ -32,6 +33,7 @@ public:
 	virtual void visit(FunctionDefinition* e) = 0;
 	virtual void visit(IfStatement* e) = 0;
 	virtual void visit(ParameterList* e) = 0;
+	virtual void visit(RandomForStatement* e) = 0;
 	virtual void visit(RandomIfStatement* e) = 0;
 	virtual void visit(ReturnStatement* e) = 0;
 	virtual void visit(Scope* e) = 0;
