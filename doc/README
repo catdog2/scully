@@ -4,5 +4,5 @@
 - CMake 2.6 or newer
 
 # Used Libraries
-- lemon parser (from sqlite) (grammer/*.c)
-- lexertl (http://www.benhanson.net/lexertl.html) ()
+- lemon parser (from sqlite) (grammar/*.c)
+- lexertl (http://www.benhanson.net/lexertl.html) (inc/lexertl/*)
