@@ -48,7 +48,13 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 }
 
 void CodeGenVisitor::visit(ConstantExpression* e) {
-	value_ = llvm::ConstantInt::get(llvm::getGlobalContext(), llvm::APInt(32, e->getValue(), 10));
+	if(e->getValue() == "true") {
+		value_ = llvm::ConstantInt::get(llvm::getGlobalContext(), llvm::APInt(1, 1, 10));
+	} else if(e->getValue() == "false") {
+		value_ = llvm::ConstantInt::get(llvm::getGlobalContext(), llvm::APInt(1, 0, 10));
+	} else {
+		value_ = llvm::ConstantInt::get(llvm::getGlobalContext(), llvm::APInt(32, e->getValue(), 10));
+	}
 }
 
 void CodeGenVisitor::visit(ExpressionStatement* e) {
