@@ -32,6 +32,9 @@
 int main() {
 	srand(42);
 
+	bool debugParser = false;
+	bool debugCodeGen = false;
+
 	lexertl::rules rules;
 	lexertl::state_machine state_machine;
 
@@ -123,6 +126,18 @@ int main() {
 			return 0;
 		}
 
+		if (input == "@dp") {
+			debugParser = !debugParser;
+			std::cout << "Debugging for the parser: " << debugParser << std::endl;
+			continue;
+		}
+
+		if (input == "@dc") {
+			debugCodeGen = !debugCodeGen;
+			std::cout << "Debugging for the code generation: " << debugCodeGen << std::endl;
+			continue;
+		}
+
 		auto iter = input.begin();
 		auto end = input.end();
 		lexertl::smatch results(iter, end);
@@ -140,7 +155,9 @@ int main() {
 			}
 		} while (results.id != 0);
 
-		module->dump();
+		if (debugCodeGen) {
+			module->dump();
+		}
 	}
 
 	scullyParserFree(parser, free);
