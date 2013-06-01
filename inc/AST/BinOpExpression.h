@@ -1,20 +1,12 @@
-#ifndef BINOP_H
-#define BINOP_H
+#ifndef BINOPEXPRESSION_H
+#define BINOPEXPRESSION_H
 
 #include "AST/Expression.h"
-
-enum BinOp {
-	OP_EQUALS,
-	OP_LESS,
-	OP_PLUS,
-	OP_MINUS,
-	OP_TIMES,
-	OP_DIV
-};
+#include "AST/BinOp.h"
 
 class BinOpExpression : public Expression {
 public:
-	BinOpExpression(Expression* leftExp ,BinOp op, Expression* rightExp);
+	BinOpExpression(Expression* leftExp, BinOp op, Expression* rightExp);
     virtual ~BinOpExpression();
 
 	BinOp getOp();
@@ -31,4 +23,4 @@ private:
 
 };
 
-#endif // BINOP_H
+#endif // BINOPEXPRESSION_H

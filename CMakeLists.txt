@@ -85,6 +85,7 @@ SET(SCULLY_SOURCE
 	src/AST/VariableDefinition.cpp
 	src/AST/ValueList.cpp
 	src/AST/LoadExpression.cpp
+	src/AST/BinOp.cpp
 
 
 	${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp

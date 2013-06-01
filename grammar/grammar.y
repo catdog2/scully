@@ -96,12 +96,12 @@ statements(A) ::= statements(B) statement(C).		{ B->addStatement(C); A = B; }
 %type expr {Expression*}
 expr(A) ::= T_IDENTIFIER(ID).						{ A = new LoadExpression(ID->getText()); }
 expr(A) ::= T_IDENTIFIER(ID) T_ASSIGN expr(E).		{ A = new AssignmentExpression(ID->getText(), E); }
-expr(A) ::= expr(B) T_EQUALS expr(C).				{ A = new BinOpExpression(B, OP_EQUALS, C); }
-expr(A) ::= expr(B) T_LESS expr(C).					{ A = new BinOpExpression(B, OP_LESS, C); }
-expr(A) ::= expr(B) T_PLUS expr(C).					{ A = new BinOpExpression(B, OP_PLUS, C); }
-expr(A) ::= expr(B) T_MINUS expr(C).				{ A = new BinOpExpression(B, OP_MINUS, C); }
-expr(A) ::= expr(B) T_TIMES expr(C).				{ A = new BinOpExpression(B, OP_TIMES, C); }
-expr(A) ::= expr(B) T_DIV expr(C).					{ A = new BinOpExpression(B, OP_DIV, C); }
+expr(A) ::= expr(B) T_EQUALS expr(C).				{ A = new BinOpExpression(B, BinOp::EQUALS, C); }
+expr(A) ::= expr(B) T_LESS expr(C).					{ A = new BinOpExpression(B, BinOp::LESS, C); }
+expr(A) ::= expr(B) T_PLUS expr(C).					{ A = new BinOpExpression(B, BinOp::PLUS, C); }
+expr(A) ::= expr(B) T_MINUS expr(C).				{ A = new BinOpExpression(B, BinOp::MINUS, C); }
+expr(A) ::= expr(B) T_TIMES expr(C).				{ A = new BinOpExpression(B, BinOp::TIMES, C); }
+expr(A) ::= expr(B) T_DIV expr(C).					{ A = new BinOpExpression(B, BinOp::DIV, C); }
 expr(A) ::= T_CINT(I).								{ A = new ConstantExpression(I->getText()); }
 expr(A) ::= T_TRUE.									{ A = new ConstantExpression("true"); }
 expr(A) ::= T_FALSE.								{ A = new ConstantExpression("false"); }
