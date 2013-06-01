@@ -12,6 +12,7 @@
 #include "AST/BinOp.h"
 #include "AST/ConstantExpression.h"
 #include "AST/Expression.h"
+#include "AST/IfStatement.h"
 #include "AST/ParameterList.h"
 #include "AST/Statement.h"
 #include "AST/StatementList.h"
@@ -35,7 +36,7 @@
 %left T_TIMES T_DIV.
 
 %syntax_error {
-    std::cerr << "Syntax error!" << std::endl;
+	std::cerr << "Syntax error!" << std::endl;
 }
 
 %parse_failure {
@@ -52,7 +53,7 @@ fundefs(A) ::= fundefs fundef(B).					{ A = A + B; }
 
 %type fundef {int}
 fundef(A) ::= type(T) T_IDENTIFIER(ID) T_LPAREN params(P) T_RPAREN T_BEGIN statements(S) T_END.
-													{ A = 1 + 1 + 1 + S; /* T P ID */ }
+													{ A = 1 + 1 + 1 + 1; /* T ID P S */ }
 
 %type type {Type*}
 type(A) ::= T_BOOL.									{ A = new Type("bool"); }
@@ -66,19 +67,19 @@ params(A) ::= type(T) T_IDENTIFIER(ID).				{ A = new ParameterList(); A->addPara
 params(A) ::= params(B) T_COMMA type(T) T_IDENTIFIER(ID).
 													{ B->addParameter(T, ID->getText()); A = B; }
 
-%type statement {int}
+%type statement {Statement*}
 statement(A) ::= T_IF T_LPAREN expr(E) T_RPAREN statement(S).
-													{ A = 1 + S; /* E */ }
+													{ A = new IfStatement(E, S); }
 statement(A) ::= T_RIF T_LPAREN T_CINT(P) T_RPAREN statement(S).
-													{ A = 1 + S; /* P */ }
+													{ A = 0; /* P S */ }
 statement(A) ::= T_FOR T_LPAREN expr(INIT) T_SEMICOLON expr(COND) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
-													{ A = 1 + 1 + 1 + S; /* INIT COND STEP */ }
+													{ A = 0; /* INIT COND STEP S */ }
 statement(A) ::= T_RFOR T_LPAREN expr(INIT) T_SEMICOLON T_CINT(P) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
-													{ A = 1 + 1 + 1 + S; /* INIT P STEP */ }
-statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = 1; /* E */ }
-statement(A) ::= T_BEGIN statements(S) T_END.		{ A = S; }
-statement(A) ::= vardef(V) T_SEMICOLON.				{ A = 1; /* V */ }
-statement(A) ::= expr(E) T_SEMICOLON.				{ A = 1; /* E */ }
+													{ A = 0; /* INIT P STEP S */ }
+statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = 0; /* E */ }
+statement(A) ::= T_BEGIN statements(S) T_END.		{ A = 0; /* S */ }
+statement(A) ::= vardef(V) T_SEMICOLON.				{ A = 0; /* V */ }
+statement(A) ::= expr(E) T_SEMICOLON.				{ A = 0; /* E */ }
 
 %type statements {StatementList*}
 statements(A) ::= .									{ A = new StatementList(); }
