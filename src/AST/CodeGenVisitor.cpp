@@ -43,6 +43,10 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 		return;
 	}
 
+	if (lhs->getType() != rhs->getType()) {
+		throw "lhs type of binop != rhs type of binop";
+	}
+
 	switch (e->getOp()) {
 	case BinOp::PLUS:
 	value_ = builder_->CreateAdd(lhs, rhs, "addtmp");
@@ -63,7 +67,7 @@ void CodeGenVisitor::visit(BinOpExpression* e) {
 		value_ = builder_->CreateICmpSLT(lhs, rhs, "cmptmp");
 		break;
 	default:
-		// TODO error
+		throw "Unkown Operator, This is a Bug!";
 		break;
 	}
 }
