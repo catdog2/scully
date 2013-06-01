@@ -69,6 +69,7 @@ SET(SCULLY_SOURCE
 	src/AST/IfStatement.cpp
 	src/AST/ParameterList.cpp
 	src/AST/ReturnStatement.cpp
+	src/AST/RandomIfStatement.cpp
 	src/AST/Scope.cpp
 	src/AST/Statement.cpp
 	src/AST/StatementList.cpp
