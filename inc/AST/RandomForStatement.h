@@ -7,19 +7,19 @@
 class RandomForStatement : public Statement
 {
 public:
-	RandomForStatement(Expression* init, Expression* prob, Expression* step, Statement* stmt);
+	RandomForStatement(Statement *init, Expression* prob, Statement *step, Statement* stmt);
 	virtual ~RandomForStatement();
 
 	virtual void accept(ASTVisitor *visitor);
 
-	Expression* getInit();
+	Statement* getInit();
 	Expression* getProb();
-	Expression* getStep();
+	Statement *getStep();
 	Statement* getStmt();
 private:
-	Expression* init_;
+	Statement* init_;
 	Expression* prob_;
-	Expression* step_;
+	Statement* step_;
 	Statement* stmt_;
 };
 

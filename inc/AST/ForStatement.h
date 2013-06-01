@@ -6,19 +6,19 @@
 
 class ForStatement : public Statement {
 public:
-	ForStatement(Expression* init, Expression* cond, Expression* step, Statement* stmt);
+	ForStatement(Statement* init, Expression* cond, Statement* step, Statement* stmt);
 	virtual ~ForStatement();
 
 	virtual void accept(ASTVisitor* visitor);
 
-	Expression* getInit();
+	Statement *getInit();
 	Expression* getCond();
-	Expression* getStep();
+	Statement* getStep();
 	Statement* getStmt();
 private:
-	Expression* init_;
+	Statement* init_;
 	Expression* cond_;
-	Expression* step_;
+	Statement* step_;
 	Statement* stmt_;
 };
 
