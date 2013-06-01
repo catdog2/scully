@@ -335,6 +335,9 @@ void CodeGenVisitor::JIT(Expression* e) {
 	int (*fP)() = (int (*)())(intptr_t)fPtr;
 
 	std::cout << "Evaluated to: " << fP() << std::endl;
+
+	// throw it away
+	f->eraseFromParent();
 }
 
 void CodeGenVisitor::putNamedValue(const std::string& name, llvm::Value* value) {
