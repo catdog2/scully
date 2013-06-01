@@ -1,22 +1,22 @@
 #include "AST/AssignmentExpression.h"
 #include "AST/ASTVisitor.h"
 
-AssignmentExpression::AssignmentExpression(std::string id, Expression *expr)
-{
-    //
+AssignmentExpression::AssignmentExpression(std::string id, Expression *expr) : id_(id), expr_(expr) {
+	//
 }
 
 AssignmentExpression::~AssignmentExpression() {
+	//
 }
 
 void AssignmentExpression::accept(ASTVisitor *visitor) {
-    visitor->visit(this);
+	visitor->visit(this);
 }
 
 std::string AssignmentExpression::getId() {
-    return id_;
+	return id_;
 }
 
 Expression* AssignmentExpression::getExpr() {
-    return expr_;
+	return expr_;
 }

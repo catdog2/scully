@@ -69,6 +69,8 @@ SET(SCULLY_SOURCE
     src/AST/Type.cpp
     src/AST/VariableDefinition.cpp
     src/AST/StatementList.cpp
+    src/AST/ValueList.cpp
+    src/AST/IfStatement.cpp
 
     ${CMAKE_CURRENT_BINARY_DIR}/grammar.cpp
 )
