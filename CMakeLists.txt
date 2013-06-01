@@ -65,6 +65,7 @@ SET(SCULLY_SOURCE
 	src/AST/ConstantExpression.cpp
 	src/AST/Expression.cpp
 	src/AST/ExpressionStatement.cpp
+	src/AST/ForStatement.cpp
 	src/AST/FunctionDefinition.cpp
 	src/AST/IfStatement.cpp
 	src/AST/ParameterList.cpp

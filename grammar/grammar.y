@@ -13,9 +13,11 @@
 #include "AST/ConstantExpression.h"
 #include "AST/Expression.h"
 #include "AST/ExpressionStatement.h"
+#include "AST/ForStatement.h"
 #include "AST/FunctionDefinition.h"
 #include "AST/IfStatement.h"
 #include "AST/ParameterList.h"
+#include "AST/RandomIfStatement.h"
 #include "AST/ReturnStatement.h"
 #include "AST/Scope.h"
 #include "AST/Statement.h"
@@ -70,15 +72,15 @@ params(A) ::= params(B) T_COMMA type(T) T_IDENTIFIER(ID).
 %type statement {Statement*}
 statement(A) ::= T_IF T_LPAREN expr(E) T_RPAREN statement(S).
 													{ A = new IfStatement(E, S); }
-statement(A) ::= T_RIF T_LPAREN T_CINT(P) T_RPAREN statement(S).
-													{ A = 0; /* P S */ }
+statement(A) ::= T_RIF T_LPAREN expr(P) T_RPAREN statement(S).
+													{ A = new RandomIfStatement(P, S); }
 statement(A) ::= T_FOR T_LPAREN expr(INIT) T_SEMICOLON expr(COND) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
-													{ A = 0; /* INIT COND STEP S */ }
-statement(A) ::= T_RFOR T_LPAREN expr(INIT) T_SEMICOLON T_CINT(P) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
+													{ A = new ForStatement(INIT, COND, STEP, S); }
+statement(A) ::= T_RFOR T_LPAREN expr(INIT) T_SEMICOLON expr(P) T_SEMICOLON expr(STEP) T_RPAREN statement(S).
 													{ A = 0; /* INIT P STEP S */ }
 statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = new ReturnStatement(E); }
 statement(A) ::= T_BEGIN statements(S) T_END.		{ A = new Scope(S); }
-statement(A) ::= vardef(V) T_SEMICOLON.				{ A = V; /* V */ }
+statement(A) ::= vardef(V) T_SEMICOLON.				{ A = V; }
 statement(A) ::= expr(E) T_SEMICOLON.				{ A = new ExpressionStatement(E); }
 
 %type statements {StatementList*}
