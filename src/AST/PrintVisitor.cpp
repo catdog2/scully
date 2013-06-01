@@ -98,7 +98,12 @@ void PrintVisitor::visit(ValueList* e) {
 }
 
 void PrintVisitor::visit(VariableDefinition* e) {
-	// TODO implement
+	println("VariableDefinition");
+	level_++;
+	std::stringstream ss;
+	ss << e->getType()->getName() << "<-" << e->getName();
+	println(ss.str());
+	level_--;
 }
 
 void PrintVisitor::indent() {
