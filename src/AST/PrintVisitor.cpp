@@ -1,6 +1,8 @@
 #include "AST/PrintVisitor.h"
+#include <iostream>
+#include <sstream>
 
-PrintVisitor::PrintVisitor() {
+PrintVisitor::PrintVisitor() : level_(0) {
 	//
 }
 
@@ -33,7 +35,17 @@ void PrintVisitor::visit(FunctionCallExpression* e) {
 }
 
 void PrintVisitor::visit(FunctionDefinition* e) {
-	// TODO implement
+	println("FunctionDefinition");
+	level_++;
+	std::stringstream ss;
+	ss << e->getType()->getName() << " <- " << e->getName();
+	println(ss.str());
+	ParameterList* params = e->getParams();
+	if (params) {
+		params->accept(this);
+	}
+	e->getSl()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(IfStatement* e) {
@@ -61,6 +73,7 @@ void PrintVisitor::visit(Scope* e) {
 }
 
 void PrintVisitor::visit(StatementList* e) {
+	println("StatementList");
 	// TODO implement
 }
 
@@ -70,4 +83,20 @@ void PrintVisitor::visit(ValueList* e) {
 
 void PrintVisitor::visit(VariableDefinition* e) {
 	// TODO implement
+}
+
+void PrintVisitor::indent() {
+	for (int i = 0; i < level_; i++) {
+		std::cout << " ";
+	}
+}
+
+void PrintVisitor::print(const std::string& s) {
+	indent();
+	std::cout << s;
+}
+
+void PrintVisitor::println(const std::string& s) {
+	print(s);
+	std::cout << std::endl;
 }

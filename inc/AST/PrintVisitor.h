@@ -2,6 +2,7 @@
 #define PRINTVISITOR_H
 
 #include "ASTVisitor.h"
+#include <string>
 
 class PrintVisitor : public ASTVisitor {
 public:
@@ -24,6 +25,11 @@ public:
 	virtual void visit(StatementList* e);
 	virtual void visit(ValueList* e);
 	virtual void visit(VariableDefinition* e);
+private:
+	int level_;
+	void indent();
+	void print(const std::string& s);
+	void println(const std::string& s);
 };
 
 #endif // PRINTVISITOR_H
