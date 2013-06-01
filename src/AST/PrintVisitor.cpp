@@ -101,15 +101,46 @@ void PrintVisitor::visit(IfStatement* e) {
 }
 
 void PrintVisitor::visit(ParameterList* e) {
-	// TODO implement
+	println("ParameterList");
+	level_++;
+	auto params = e->getParameters();
+	auto iter = params.begin();
+	auto end = params.end();
+	for (; iter != end; ++iter) {
+		Parameter& p = (*iter);
+		std::stringstream ss;
+		ss << "Name: " << p.second;
+		println(ss.str());
+		ss.str("");
+		ss.clear();
+		ss << "Type: " << p.first->getName();
+		println(ss.str());
+	}
+	level_--;
 }
 
 void PrintVisitor::visit(RandomForStatement* e) {
-	// TODO implement
+	println("RandomForStatement");
+	level_++;
+	println("Init:");
+	e->getInit()->accept(this);
+	println("Probability:");
+	e->getProb()->accept(this);
+	println("Step:");
+	e->getStep()->accept(this);
+	println("Stmt:");
+	e->getStmt()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(RandomIfStatement* e) {
-	// TODO implement
+	println("RandomIfStatement");
+	level_++;
+	println("Probability:");
+	e->getProb()->accept(this);
+	println("Stmt:");
+	e->getStmt()->accept(this);
+	level_--;
 }
 
 void PrintVisitor::visit(ReturnStatement* e) {
@@ -139,7 +170,15 @@ void PrintVisitor::visit(StatementList* e) {
 }
 
 void PrintVisitor::visit(ValueList* e) {
-	// TODO implement
+	println("ValueList");
+	level_++;
+	auto values = e->getValues();
+	auto iter = values.begin();
+	auto end = values.end();
+	for(; iter != end; ++iter) {
+		(*iter)->accept(this);
+	}
+	level_--;
 }
 
 void PrintVisitor::visit(VariableDefinition* e) {
