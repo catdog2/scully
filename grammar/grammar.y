@@ -82,7 +82,7 @@ statement(A) ::= T_RIF T_LPAREN expr(P) T_RPAREN statement(S).
 													{ A = new RandomIfStatement(P, S); }
 statement(A) ::= T_FOR T_LPAREN statement(INIT) expr(COND) T_SEMICOLON statement(STEP) T_RPAREN statement(S).
 													{ A = new ForStatement(INIT, COND, STEP, S); }
-statement(A) ::= T_RFOR T_LPAREN statement(INIT) T_SEMICOLON expr(P) T_SEMICOLON statement(STEP) T_RPAREN statement(S).
+statement(A) ::= T_RFOR T_LPAREN statement(INIT) expr(P) T_SEMICOLON statement(STEP) T_RPAREN statement(S).
 													{ A = new RandomForStatement(INIT, P, STEP, S); }
 statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = new ReturnStatement(E); }
 statement(A) ::= T_BEGIN statements(S) T_END.		{ A = new Scope(S); }
