@@ -2,11 +2,8 @@
 #define CODEGENVISITOR_H
 
 #include "ASTVisitor.h"
-#include "llvm/DerivedTypes.h"
 #include "llvm/IRBuilder.h"
-#include "llvm/LLVMContext.h"
-#include "llvm/Module.h"
-#include "llvm/Analysis/Verifier.h"
+#include <map>
 #include <string>
 
 class CodeGenVisitor : public ASTVisitor {
@@ -31,6 +28,8 @@ public:
 	virtual void visit(ValueList* e);
 	virtual void visit(VariableDefinition* e);
 private:
+	llvm::IRBuilder<>* builder_;
+	std::map<std::string, llvm::Value*> namedValues_;
 };
 
 #endif // CODEGENVISITOR_H

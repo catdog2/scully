@@ -10,6 +10,7 @@
 #include "AST/ASTElement.h"
 #include "AST/AssignmentExpression.h"
 #include "AST/BinOpExpression.h"
+#include "AST/CodeGenVisitor.h"
 #include "AST/ConstantExpression.h"
 #include "AST/Expression.h"
 #include "AST/ExpressionStatement.h"
@@ -29,11 +30,14 @@
 #include "AST/ValueList.h"
 #include "AST/VariableDefinition.h"
 
+#include "llvm/Module.h"
+
 }
 
 %name scullyParser
 
 %token_type {Token*}
+%extra_argument{llvm::Module* mod}
 
 // whitespace and comments
 %type T_WHITESPACE {int}

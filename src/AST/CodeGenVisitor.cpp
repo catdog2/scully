@@ -1,7 +1,7 @@
 #include "AST/CodeGenVisitor.h"
 
 CodeGenVisitor::CodeGenVisitor() {
-	//
+	builder_ = new llvm::IRBuilder<>(llvm::getGlobalContext());
 }
 
 CodeGenVisitor::~CodeGenVisitor() {
