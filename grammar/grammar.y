@@ -66,7 +66,6 @@ fundef(A) ::= type(T) T_IDENTIFIER(ID) T_LPAREN params(P) T_RPAREN T_BEGIN state
 %type type {Type}
 type(A) ::= T_BOOL.									{ A = Type::BOOL; }
 type(A) ::= T_INT.									{ A = Type::INT; }
-type(A) ::= T_STRING.								{ A = Type::STRING; }
 type(A) ::= T_VOID.									{ A = Type::VOID; }
 
 %type params {ParameterList*}
@@ -84,6 +83,7 @@ statement(A) ::= T_FOR T_LPAREN statement(INIT) expr(COND) T_SEMICOLON statement
 													{ A = new ForStatement(INIT, COND, STEP, S); }
 statement(A) ::= T_RFOR T_LPAREN statement(INIT) expr(P) T_SEMICOLON statement(STEP) T_RPAREN statement(S).
 													{ A = new RandomForStatement(INIT, P, STEP, S); }
+statement(A) ::= T_RETURN T_SEMICOLON.				{ A = new ReturnStatement(0); }
 statement(A) ::= T_RETURN expr(E) T_SEMICOLON.		{ A = new ReturnStatement(E); }
 statement(A) ::= T_BEGIN statements(S) T_END.		{ A = new Scope(S); }
 statement(A) ::= vardef(V) T_SEMICOLON.				{ A = V; }

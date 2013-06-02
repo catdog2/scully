@@ -332,12 +332,16 @@ void CodeGenVisitor::visit(RandomIfStatement* e) {
 }
 
 void CodeGenVisitor::visit(ReturnStatement* e) {
-	e->getExpr()->accept(this);
-	if (!value_) {
-		throw "error evaluating expression";
-	}
+	if (e->getExpr() != 0) {
+		e->getExpr()->accept(this);
+		if (!value_) {
+			throw "error evaluating expression";
+		}
 
-	builder_->CreateRet(value_);
+		builder_->CreateRet(value_);
+	} else {
+		builder_->CreateRetVoid();
+	}
 }
 
 void CodeGenVisitor::visit(Scope* e) {
