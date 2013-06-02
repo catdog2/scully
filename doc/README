@@ -1,3 +1,5 @@
+scully - a simple Programming Language with some randonmness implemented using LLVM
+
 # Requirements
 - LLVM 3.2
 - A recent C and C++ compiler
@@ -24,6 +26,11 @@ and type in your program, you can use
   rlwrap ./scully
 
 for more input awesomeness. (http://utopia.knoware.nl/~hlub/rlwrap/#rlwrap)
+
+# Interpreter output (for each line)
+  First you see a textual Representation of the AST (Generated from class PrintVisitor)
+  if you called a function this is followed by "Evaluated to: $(stdout (e.g. from put_char())$(return value of function)
+  After that the optimized LLVM representation of the code is printed out
 
 # Examples
 
