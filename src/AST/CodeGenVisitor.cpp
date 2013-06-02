@@ -161,7 +161,13 @@ void CodeGenVisitor::visit(FunctionCallExpression* e) {
 		args.push_back(value_);
 	}
 
-	value_ = builder_->CreateCall(cf, args, "calltmp");
+	if (cf->getFunctionType()->getReturnType() == typeToLLVMType(Type::VOID)) {
+		builder_->CreateCall(cf, args);
+		// just handle void functions as if they returned 0
+		value_ = llvm::ConstantInt::get(llvm::getGlobalContext(), llvm::APInt(0, 32, 10));
+	} else {
+		value_ = builder_->CreateCall(cf, args, "calltmp");
+	}
 }
 
 void CodeGenVisitor::visit(FunctionDefinition* e) {
