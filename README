@@ -5,6 +5,9 @@ Markus Hauschild <hauschildm@gmx.net>
 Florian Sattler <vuld3r@gmail.com>
 Peter Dahlberg <catdog2@tuxzone.org>
 
+# LICENSE
+Licensed under the GNU GPL v2, see LICENSE
+
 # Requirements
 - LLVM 3.2
 - A recent C and C++ compiler
