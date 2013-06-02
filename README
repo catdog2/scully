@@ -1,5 +1,10 @@
 scully - a simple Programming Language with some randonmness implemented using LLVM
 
+# Authors
+Markus Hauschild <hauschildm@gmx.net>
+Florian Sattler <vuld3r@gmail.com>
+Peter Dahlberg <catdog2@tuxzone.org>
+
 # Requirements
 - LLVM 3.2
 - A recent C and C++ compiler
