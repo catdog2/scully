@@ -147,7 +147,9 @@ void PrintVisitor::visit(RandomIfStatement* e) {
 void PrintVisitor::visit(ReturnStatement* e) {
 	println("ReturnStatement");
 	level_++;
-	e->getExpr()->accept(this);
+	if (e->getExpr() != 0) {
+		e->getExpr()->accept(this);
+	}
 	level_--;
 }
 
