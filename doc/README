@@ -25,6 +25,10 @@ and type in your program, you can use
 
 for more input awesomeness. (http://utopia.knoware.nl/~hlub/rlwrap/#rlwrap)
 
+# Examples
+
+see doc/ directory, you can directly pipe them into the interpreter
+
 # Grammar
 
 // Symbols:
@@ -75,7 +79,8 @@ values ::=.
 values ::= expr.
 values ::= values T_COMMA expr.
 
-# The Symbols are
+# Symbols Map
+
 keywords:
   "bool", T_BOOL
   "for", T_FOR
